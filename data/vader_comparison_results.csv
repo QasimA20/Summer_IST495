@@ -1,0 +1,16 @@
+headline,manual_sentiment,category,vader_score,vader_sentiment,match
+Markets crash on weak jobs report,negative,economic,-0.6808,negative,True
+Fears ease after Fed decision,positive,economic,-0.0772,negative,False
+Team wins championship after stunning comeback,positive,sports,0.8481,positive,True
+CEO resigns amid scandal,negative,business,-0.6369,negative,True
+Sunny skies expected this weekend,neutral,weather,0.4215,positive,False
+Inflation slows which boosts investor optimism,positive,economic,0.7003,positive,True
+Coach fired after disappointing season,negative,sports,-0.7783,negative,True
+Unemployment hits record low,positive,economic,-0.6124,negative,False
+Tornado watch issued for Midwest,neutral,weather,0.0,neutral,True
+Congress debates new education bill,neutral,politics,0.0,neutral,True
+Stock prices dip following Fed statement,negative,economic,0.0,neutral,False
+Athlete tests positive for banned substance,negative,sports,0.1531,positive,False
+Tech sector rallies after earnings surprise,positive,economic,0.2732,positive,True
+Police investigate overnight break-in,negative,crime,0.0,neutral,False
+Public reacts positively to new tax reform,positive,politics,0.5267,positive,True

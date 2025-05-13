@@ -14,3 +14,8 @@ Athlete tests positive for banned substance,negative,sports,0.1531,positive,Fals
 Tech sector rallies after earnings surprise,positive,economic,0.2732,positive,True
 Police investigate overnight break-in,negative,crime,0.0,neutral,False
 Public reacts positively to new tax reform,positive,politics,0.5267,positive,True
+Market holds steady despite warnings,neutral,economic,0.2235,positive,False
+Scandal unfolds in major tech company,negative,business,-0.4404,negative,True
+Fans cheer as underdogs secure victory,positive,sports,0.6908,positive,True
+Weather improves after storm warning,positive,weather,0.1027,positive,True
+Rising concerns over data privacy,negative,tech,0.0,neutral,False

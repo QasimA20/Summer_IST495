@@ -1,6 +1,6 @@
-headline,vader_score,vader_sentiment,manual_sentiment,why_it_matters
+headline,vader_score,vader_sentiment,manual_sentiment,misclassification_notes
 "Unemployment hits record low",-0.6124,negative,positive,"'Unemployment' triggered a strong negative score, even though the full context is clearly positive"
 "Fears ease after Fed decision",-0.07,negative,positive,"VADER focused on 'fears' instead of the easing context"
 "Team wins despite injury plague",0.01,neutral,positive,"Positive result misread due to 'injury'"
-"Market holds steady despite warnings",-0.04,neutral,positive,"Tone is stable/positive, but VADER is swayed by 'warnings'"
+"Market holds steady despite warnings",-0.04,neutral,positive,"Tone is stable/positive, but VADER is probably swayed by 'warnings'"
 "Athlete tests positive for banned substance",-0.34,negative,neutral,"VADER may be right on tone, but context is neutral reporting"

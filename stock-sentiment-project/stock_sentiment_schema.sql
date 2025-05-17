@@ -14,3 +14,7 @@ CREATE TABLE IF NOT EXISTS headlines (
 SHOW TABLES;
 
 
+USE stock_news;
+SELECT * FROM headlines ORDER BY id DESC LIMIT 500;
+
+

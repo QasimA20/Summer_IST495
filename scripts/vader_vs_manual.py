@@ -37,3 +37,4 @@ print(df[['headline', 'manual_sentiment', 'vader_sentiment', 'vader_score', 'mat
 # This saves the results to a new CSV file for more efficient reporting
 df.to_csv('data/vader_comparison_results.csv', index=False)
 print("\nSaved results to: data/vader_comparison_results.csv")
+

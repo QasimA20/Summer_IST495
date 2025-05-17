@@ -2,7 +2,7 @@
 import pandas as pd
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 
-# Load your CSV
+# Load CSV
 df = pd.read_csv('data/custom_sample_headlines.csv')
 
 # Initialize the analyzer

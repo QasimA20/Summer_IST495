@@ -1,64 +1,78 @@
-from pyfinviz.news import News
-import mysql.connector
+#this script now displays the correct tickers for each headline
+
+import cloudscraper
+from bs4 import BeautifulSoup
 from datetime import datetime
-import re
-
-
-#Not finished, has errors!
-def extract_ticker(headline):
-    # Check for tickers in parentheses
-    match = re.search(r'\(([A-Z]{1,5})\)', headline) # Look for (A-Z letters, 1 to 5 long)
-    if match:
-        return match.group(1)
-    
-    # Otherwise, look for uppercase words (or potential tickers)
-    words = headline.split() # this breaks the sentence into individual words
-    for word in words:
-        if word.isupper() and 1 <= len(word) <= 5: #Looks for all capital letters
-            return word
-    
-    return "N/A"
-
-
-# STOCKS_NEWS view
-news = News(view_option=News.ViewOption.STOCKS_NEWS)
-
-print(news.news_df)  #showing stock-specific headlines
-
-# Extract the DataFrame
-df = news.news_df
+import mysql.connector
 
 # MySQL connection with my password
 conn = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="Qasim2004",  
+    password="Qasim2004", 
     database="stock_news"
 )
 cursor = conn.cursor()
+
+# Create the scraper
+# I discovered this library after regular requests and Selenium kept getting blocked.
+scraper = cloudscraper.create_scraper()
+url = "https://finviz.com/news.ashx?v=3" #URL of the Finviz news page
+response = scraper.get(url)
+
+# Parse the HTML using BeautifulSoup
+soup = BeautifulSoup(response.content, "html.parser") #Parses the page content
+rows = soup.find_all("tr") # This finds all table rows 
+
+print(f"Found {len(rows)} rows!\n")
 
 # This SQL query is written as a Python string 
 # and sent to MySQL using the cursor.
 # The %s placeholders will be filled in with the actual data
 query = """
-    INSERT INTO headlines (ticker, headline, date, price_at_time, price_1h_later)
-    VALUES (%s, %s, %s, %s, %s)
+INSERT INTO headlines (ticker, headline, date, price_at_time, price_1h_later)
+VALUES (%s, %s, %s, %s, %s)
 """
 
-# Iterate through DataFrame rows. It is skipping the index and only using the row data
-for _, row in df.iterrows():
-    ticker = extract_ticker(row["Headline"]) #extracts the ticker symbol
-    headline = row["Headline"]
-    date = datetime.now() #current date and time as the timestamp
-    price_at_time = None #put it at none for now, not finished
-    price_1h_later = None
-    values = (ticker, headline, date, price_at_time, price_1h_later)
-    cursor.execute(query, values) #Insert the data into the database table
 
+# Counters to track insert success/failure
+# I did this because some of the data was giving me trouble inputting
+inserted = 0
+skipped = 0
+
+#Loop through each of the rows
+for row in rows:
+    # Finds the <a> tag linking to a stock's quote page, which contains the ticker
+    #I found this out by inspecting the html page
+    ticker_tag = row.select_one('a[href^="/quote.ashx?t="]') 
+    headline_tag = row.find("a", class_="nn-tab-link") #clickable news headline text
+
+    #skip if some of the data is missing, i will work on finding a solution for this!
+    if not ticker_tag or not headline_tag:
+        skipped += 1
+        continue
+
+    ticker = ticker_tag.get_text(strip=True)
+
+    # Validating the ticker (not finished)
+    if not (1 <= len(ticker) <= 5 and ticker.isalpha() and ticker.isupper()):
+        skipped += 1
+        continue
+
+    headline = headline_tag.get_text(strip=True)
+    # Gets the current date and time
+    timestamp = datetime.now()
+
+    values = (ticker, headline, timestamp, None, None)
+    cursor.execute(query, values)
+    inserted += 1
+    print(f"[{timestamp}] [{ticker}] {headline}")
+
+# finalize the MySQL changes
 conn.commit()
 cursor.close()
 conn.close() # Close the connection to the database
 
-print(" Headlines inserted successfully!") #to ensure it runs smoothly
-
-
+#summary
+print(f"\n Inserted: {inserted} rows")
+print(f" Skipped: {skipped} rows due to invalid or missing data")

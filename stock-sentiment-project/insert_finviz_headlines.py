@@ -30,7 +30,7 @@ print(f"Found {len(rows)} rows!\n")
 # and sent to MySQL using the cursor.
 # The %s placeholders will be filled in with the actual data
 query = """
-INSERT INTO headlines (ticker, headline, date, price_at_time, price_1h_later)
+INSERT IGNORE INTO headlines (ticker, headline, date, price_at_time, price_1h_later)
 VALUES (%s, %s, %s, %s, %s)
 """
 
@@ -49,6 +49,10 @@ for row in rows:
 
     #skip if some of the data is missing, i will work on finding a solution for this!
     if not ticker_tag or not headline_tag:
+        # Save skipped row to CSV
+        with open("skipped_headlines.csv", "a") as file:
+            file.write(row.get_text(strip=True) + "\n")
+
         skipped += 1
         continue
 
@@ -56,6 +60,10 @@ for row in rows:
 
     # Validating the ticker (not finished)
     if not (1 <= len(ticker) <= 5 and ticker.isalpha() and ticker.isupper()):
+        # Save skipped row to CSV
+        with open("skipped_headlines.csv", "a") as file:
+            file.write(row.get_text(strip=True) + "\n")
+
         skipped += 1
         continue
 

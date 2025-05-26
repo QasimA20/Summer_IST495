@@ -14,7 +14,7 @@ print("") #formatting purposes
 
 #Set a random headline's timestamp 
 #Ex: "2025-05-21 09:30:00-04:00"
-headline_time = "2025-05-21 09:30:00-04:00"
+headline_time = "2025-05-23 09:30:00-04:00"
 time_to_check = pd.to_datetime(headline_time)
 
 # Download 1-minute price data for AAPL (could be most recent date)

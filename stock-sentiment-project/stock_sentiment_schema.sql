@@ -14,11 +14,18 @@ CREATE TABLE IF NOT EXISTS headlines (
 );
 
 --  To see the data
-SELECT * FROM headlines ORDER BY id DESC LIMIT 100;
+SELECT * FROM headlines ORDER BY id DESC LIMIT 20;
+
 
 -- Use this to clear the table but keep the structure
 -- TRUNCATE TABLE headlines;
 
 --  deletes everything
 -- DROP TABLE IF EXISTS headlines;
+
+
+SELECT COUNT(*) FROM headlines
+WHERE price_at_time IS NOT NULL AND price_1h_later IS NOT NULL;
+
+
 

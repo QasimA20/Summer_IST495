@@ -7,7 +7,7 @@ import time
 conn = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="Qasim2004",  # update if needed
+    password="Qasim2004",  
     database="stock_news"
 )
 cursor = conn.cursor(dictionary=True)
@@ -49,16 +49,16 @@ for row in rows:
             """
             cursor.execute(update_query, (price_now, price_later, row_id))
             conn.commit()
-            print(f"✅ Updated: Now = {price_now}, 1h Later = {price_later}")
+            print(f" Updated: Now = {price_now}, 1h Later = {price_later}")
         else:
-            print("❌ Price not found for one or both timestamps.")
+            print(" Price not found for one or both timestamps.")
 
     except Exception as e:
-        print(f"⚠️ Error updating ID {row_id}: {e}")
+        print(f" Error updating ID {row_id}: {e}")
 
     time.sleep(1)  # prevent yfinance rate limiting
 
 cursor.close()
 conn.close()
-print("✅ All updates complete.")
+print(" All updates complete.")
 

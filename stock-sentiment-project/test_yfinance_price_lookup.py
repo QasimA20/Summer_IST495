@@ -1,73 +1,52 @@
-import mysql.connector  
-import pandas as pd     
-import yfinance as yf   
-import time             
+import yfinance as yf
+import pandas as pd
 
-#  Connect to MySQL 
-conn = mysql.connector.connect(
-    host="localhost",           
-    user="root",                 
-    password="Qasim2004",     
-    database="stock_news"       
-)
-cursor = conn.cursor(dictionary=True)  # gives us each row as a dictionary 
+#create a Ticker object #for example i chose AAPL
+ticker_str = "AAPL"
+ticker = yf.Ticker(ticker_str)
 
-# Find headlines that are missing price info 
-cursor.execute("""
-    SELECT id, ticker, date
-    FROM headlines
-    WHERE price_at_time IS NULL OR price_1h_later IS NULL
-""")
-rows = cursor.fetchall()  # fetch all those rows from the DB
+#This will get the 1-minute interval prices for the past day
+df = ticker.history(interval="1m", period="1d")
 
-print(f"Found {len(rows)} rows that need price updates.")  # just letting us know how many
+print(df.head())  # Show rows
+print("") #formatting purposes
 
-# Loop through each row one-by-one 
-for row in rows:
-    headline_id = row["id"]          # unique ID of row
-    ticker_symbol = row["ticker"]    # stock symbol
 
-    # Convert the date column to a proper datetime object
-    timestamp = pd.to_datetime(row["date"])
+#Set a random headline's timestamp 
+#Ex: "2025-05-21 09:30:00-04:00"
+headline_time = "2025-06-10 09:30:00-04:00"
+time_to_check = pd.to_datetime(headline_time)
 
-    try:
-        # Create a Ticker object from yfinance so we can fetch price data
-        ticker = yf.Ticker(ticker_symbol)
+# Download 1-minute price data for AAPL (could be most recent date)
+ticker = yf.Ticker("AAPL")
 
-        df = ticker.history(interval="1m", period="2d")
+# Trying to find the price at that exact timestamp
 
-        # Initialize our two target prices
-        price_at_time = None
-        price_1h_later = None
+if time_to_check in df.index:
+    # Use .loc to look up the row in the DataFrame
+    price_row = df.loc[time_to_check]
+    print(f"\nTicker: {ticker_str}")
+    print("Price at headline time:")
+    pd.set_option('display.float_format', '{:.2f}'.format) #Number Formatting
+    print(price_row)
 
-        # Try to get the price at the exact moment the news dropped
-        if timestamp in df.index:
-            price_at_time = df.loc[timestamp]["Close"]  # use 'Close' price at that minute
+else:
+    print("No exact price match found for this time.")
+    # I did this just incase I enter an incorrect time,
+    # It will print the 5 closest available times
+    print("Closest available timestamps:")
+    print(df.index[:5])
 
-        # Now 1 hour later
-        timestamp_later = timestamp + pd.Timedelta(hours=1)  # adds 1 hour to original time
-        if timestamp_later in df.index:
-            price_1h_later = df.loc[timestamp_later]["Close"]
+# Getting the price one hour later
+# I found out about pd.Timedelta while researching how to add time offsets in pandas
+time_plus_1hour = time_to_check + pd.Timedelta(hours=1)
 
-        #Save the prices back into the MySQL database 
-        # This SQL query updates the row by ID, inserting both prices
-        update_query = """
-            UPDATE headlines
-            SET price_at_time = %s, price_1h_later = %s
-            WHERE id = %s
-        """
-        cursor.execute(update_query, (price_at_time, price_1h_later, headline_id))
-        conn.commit()  # save changes
-
-        print(f" Updated ID {headline_id} | Ticker: {ticker_symbol} | Time: {timestamp}")
-    
-    except Exception as e:
-        #  error message
-        print(f" Failed for ID {headline_id} ({ticker_symbol}): {e}")
-
-    # To avoid rate-limiting or getting blocked by yfinance
-    time.sleep(1)
-
-cursor.close()  
-conn.close()     
-print(" All updates complete.")
+ 
+# This returns the stock price data for that specific minute
+if time_plus_1hour in df.index:
+    price_1h_later = df.loc[time_plus_1hour]
+    print(f"\nTicker: {ticker_str}")
+    print("\n Price one hour later:")
+    print(price_1h_later)
+else:
+    print("\n Cannot find price one hour later.")

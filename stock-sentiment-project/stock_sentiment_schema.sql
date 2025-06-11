@@ -17,6 +17,32 @@ CREATE TABLE IF NOT EXISTS headlines (
 SELECT * FROM headlines ORDER BY id DESC LIMIT 20;
 
 
+-- Fix timestamp
+SELECT id, ticker, headline, FROM_UNIXTIME(UNIX_TIMESTAMP(date)) AS formatted_date
+FROM headlines
+ORDER BY id DESC
+LIMIT 5;
+
+
+
+SELECT
+  id,
+  ticker,
+  headline,
+  DATE_FORMAT(date, '%Y-%m-%d %H:%i:%s') AS clean_date
+FROM headlines
+WHERE date >= CURDATE() - INTERVAL 10 DAY
+  AND WEEKDAY(date) < 5;
+
+
+
+SELECT * FROM headlines
+WHERE date >= CURDATE() - INTERVAL 10 DAY
+  AND WEEKDAY(date) < 5;
+
+DESCRIBE headlines;
+-- Selects all weekday headlines from approx. 7 business days ago
+
 -- Use this to clear the table but keep the structure
 -- TRUNCATE TABLE headlines;
 

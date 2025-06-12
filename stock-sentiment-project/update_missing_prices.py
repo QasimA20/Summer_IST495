@@ -1,7 +1,10 @@
+#working on fetching prices_at_time of headline
 import mysql.connector
 import yfinance as yf
 import pandas as pd
 import time
+from datetime import datetime, timedelta
+import numpy as np
 
 # Connect to MySQL
 conn = mysql.connector.connect(
@@ -12,53 +15,66 @@ conn = mysql.connector.connect(
 )
 cursor = conn.cursor(dictionary=True)
 
-# Fetch rows that need price updates
-cursor.execute("SELECT * FROM headlines WHERE price_at_time IS NULL OR price_1h_later IS NULL LIMIT 5")
+# Get headlines that still need price updates
+cursor.execute("""
+    SELECT id, ticker, date 
+    FROM headlines 
+    WHERE price_at_time IS NULL 
+""")
 rows = cursor.fetchall()
-print(f"Found {len(rows)} rows that need price updates.")
 
+#Loop through headlines
 for row in rows:
-    row_id = row["id"]
-    ticker = row["ticker"]
-    raw_timestamp = row["date"]
+    headline_id = row['id']
+    ticker = row['ticker']
+    timestamp = row['date']
 
     try:
-        # If timestamp is already datetime (not Unix), skip conversion
-        if isinstance(raw_timestamp, int):
-            timestamp = pd.to_datetime(raw_timestamp, unit='ms')
-        else:
-            timestamp = pd.to_datetime(raw_timestamp)
+        # Skip future timestamps
+        if timestamp > datetime.now():
+            print(f"Skipping future timestamp for ID {headline_id} ({ticker})")
+            continue
 
-        print(f"\nUpdating ID {row_id} | Ticker: {ticker} | Time: {timestamp}")
+        # Format the date range: from the date of the headline to the next day
+        # This ensures we capture hourly price data for the entire relevant period
+        start_date = timestamp.strftime('%Y-%m-%d')
+        end_date = (timestamp + timedelta(days=1)).strftime('%Y-%m-%d')
 
-        # Fetch price at headline time
-        ticker_obj = yf.Ticker(ticker)
-        hist = ticker_obj.history(interval="1m", period="2d")  # use longer period for buffer
 
-        price_row_now = hist.loc[timestamp] if timestamp in hist.index else None
-        price_row_later = hist.loc[timestamp + pd.Timedelta(hours=1)] if (timestamp + pd.Timedelta(hours=1)) in hist.index else None
+        # Fetch historical hourly price data from Yahoo Finance
+        stock = yf.Ticker(ticker)
+        hist = stock.history(start=start_date, end=end_date, interval='1h')
 
-        if price_row_now is not None and price_row_later is not None:
-            price_now = round(price_row_now["Close"], 2)
-            price_later = round(price_row_later["Close"], 2)
+        if hist.empty:
+            print(f"No price data for ID {headline_id} ({ticker})")
+            continue
 
-            update_query = """
-                UPDATE headlines
-                SET price_at_time = %s, price_1h_later = %s
-                WHERE id = %s
-            """
-            cursor.execute(update_query, (price_now, price_later, row_id))
-            conn.commit()
-            print(f" Updated: Now = {price_now}, 1h Later = {price_later}")
-        else:
-            print(" Price not found for one or both timestamps.")
+        # Remove timezone info from the index to avoid comparison errors with naive datetime
+        hist.index = hist.index.tz_convert(None)
+        ts_naive = timestamp.replace(tzinfo=None)
+
+        # Find closest available time to timestamp
+        #timezone-naive version
+        closest_row = hist.iloc[np.abs(hist.index - ts_naive).argmin()]
+        price = float(round(closest_row['Close'], 2))
+
+        # Update MySQL with matched price
+        cursor.execute("""
+            UPDATE headlines
+            SET price_at_time = %s
+            WHERE id = %s
+        """, (price, headline_id))
+        conn.commit()
+
+        print(f" Updated ID {headline_id} ({ticker}) — price_at_time: {price}")
+        time.sleep(1.5)
 
     except Exception as e:
-        print(f" Error updating ID {row_id}: {e}")
-
-    time.sleep(1)  # prevent yfinance rate limiting
+        print(f"Error on ID {headline_id} ({ticker}): {e}")
+        continue
 
 cursor.close()
 conn.close()
-print(" All updates complete.")
+print("Price update (price_at_time) complete!")
+
 

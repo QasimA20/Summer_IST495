@@ -96,7 +96,7 @@ for row in rows:
         skipped += 1
         continue
 
-    print(f"Extracted time from Finviz: {timestamp}")
+    #print(f"Extracted time from Finviz: {timestamp}")
     values = (ticker, headline, timestamp, None, None)
     cursor.execute(query, values)
     inserted += 1

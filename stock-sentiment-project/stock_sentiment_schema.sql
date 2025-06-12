@@ -29,6 +29,7 @@ SELECT
   id,
   ticker,
   headline,
+  price_at_time,
   DATE_FORMAT(date, '%Y-%m-%d %H:%i:%s') AS clean_date
 FROM headlines
 WHERE date >= CURDATE() - INTERVAL 10 DAY
@@ -45,13 +46,18 @@ DESCRIBE headlines;
 
 -- Use this to clear the table but keep the structure
 -- TRUNCATE TABLE headlines;
-
 --  deletes everything
 -- DROP TABLE IF EXISTS headlines;
 
 
 SELECT COUNT(*) FROM headlines
 WHERE price_at_time IS NOT NULL AND price_1h_later IS NOT NULL;
+
+
+
+
+
+SHOW COLUMNS FROM headlines;
 
 
 

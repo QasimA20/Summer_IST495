@@ -31,6 +31,10 @@ SELECT
   headline,
   price_at_time,
   price_1h_later,
+  price_change_pct_1h,
+  sentiment_score,
+  matched_keywords,
+  sentiment_label,
   DATE_FORMAT(date, '%Y-%m-%d %H:%i:%s') AS clean_date
 FROM headlines
 WHERE date >= CURDATE() - INTERVAL 10 DAY
@@ -59,6 +63,15 @@ WHERE price_at_time IS NOT NULL AND price_1h_later IS NOT NULL;
 
 
 SHOW COLUMNS FROM headlines;
+
+
+
+ALTER TABLE headlines 
+MODIFY price_change_pct_1h DECIMAL(6,4);
+
+
+
+
 
 
 

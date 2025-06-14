@@ -35,6 +35,7 @@ SELECT
   sentiment_score,
   matched_keywords,
   sentiment_label,
+  sentiment_confidence,
   DATE_FORMAT(date, '%Y-%m-%d %H:%i:%s') AS clean_date
 FROM headlines
 WHERE date >= CURDATE() - INTERVAL 10 DAY
@@ -68,9 +69,6 @@ SHOW COLUMNS FROM headlines;
 
 ALTER TABLE headlines 
 MODIFY price_change_pct_1h DECIMAL(6,4);
-
-
-
 
 
 

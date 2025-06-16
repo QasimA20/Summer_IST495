@@ -32,6 +32,8 @@ SELECT
   price_at_time,
   price_1h_later,
   price_change_pct_1h,
+  price_4d_later,
+  price_7d_later,
   sentiment_score,
   matched_keywords,
   sentiment_label,
@@ -69,6 +71,13 @@ SHOW COLUMNS FROM headlines;
 
 ALTER TABLE headlines 
 MODIFY price_change_pct_1h DECIMAL(6,4);
+
+
+
+
+
+
+
 
 
 

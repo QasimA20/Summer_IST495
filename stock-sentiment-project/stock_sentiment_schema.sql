@@ -36,6 +36,7 @@ SELECT
   price_7d_later,
   sentiment_score,
   matched_keywords,
+  sentiment_theme,
   sentiment_label,
   sentiment_confidence,
   DATE_FORMAT(date, '%Y-%m-%d %H:%i:%s') AS clean_date
@@ -60,6 +61,8 @@ DESCRIBE headlines;
 
 SELECT COUNT(*) FROM headlines
 WHERE price_at_time IS NOT NULL AND price_1h_later IS NOT NULL;
+
+
 
 
 

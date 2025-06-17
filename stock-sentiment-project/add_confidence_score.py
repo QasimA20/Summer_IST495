@@ -28,6 +28,7 @@ for row in rows:
 
 
     # Count how many keywords were matched and then assign it a confidence level
+    
     num_matches = len(matches)
     if num_matches == 0:
         confidence = "None"
@@ -48,7 +49,6 @@ for row in rows:
         conn.commit()
 
         print(f" ID {headline_id}: {confidence} confidence based on {num_matches} matches.")
-        time.sleep(1)
 
     except Exception as e:
         print(f" Error on ID {headline_id}: {e}")

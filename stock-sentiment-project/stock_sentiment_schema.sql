@@ -33,7 +33,6 @@ SELECT
   price_1h_later,
   price_change_pct_1h,
   price_4d_later,
-  price_7d_later,
   sentiment_score,
   matched_keywords,
   sentiment_theme,

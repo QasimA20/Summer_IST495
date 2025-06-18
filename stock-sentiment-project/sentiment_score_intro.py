@@ -16,7 +16,7 @@ sentiment_dict = {
     "soars": 2, "surge": 2, "beat": 2, "growth": 2, "record": 2, "outperform": 2, "tops": 2, "celebrates": 2,
     "profit": 2, "developing drug": 2, "developed immunotherapeutic drugs": 2,
     "genetic medicine development": 2, "accelerating genetic medicine": 2, "more promising growth opportunities": 2,
-
+    
     # Mild positive
     "gain": 1, "up": 1, "buy": 1, "strong": 1, "launch": 1, "debuts": 1, "open": 1, "approve": 1,
     "positive": 1, "expands": 1, "rebranding": 1, "supporting inventory growth": 1, "financing agreement": 1,
@@ -45,7 +45,7 @@ sentiment_dict = {
     "social responsibility": 1, "strengthening public image": 1, "customer loyalty": 1,
     "positive brand awareness": 1, "community support": 1, "boosting user activity": 1,
     "won community": 1, "won award": 1, "reduce debt": 1, "monetizing asset": 1,
-    "attractive cap": 1, "strong support": 1, "accelerating development": 1, "expand treatment": 1,
+    "attractive cap": 1, "strong support": 1, "accelerating development": 1, "expand treatment": 1, "surplus": 1,
 
     # Negative
     "miss": -2, "misses": -2, "lawsuit": -2, "down": -1, "cut": -1, "recall": -2, "fall": -1, "drop": -2,
@@ -54,7 +54,7 @@ sentiment_dict = {
     "reverse split": -1, "compliance ruling": -1, "court compliance": -1,
 
     # Neutral/monitor (no score, but matched)
-    "casino": 0, "ai drama": 0, "china content": 0, "short platform": 0, "short drama": 0
+    "casino": 0, "ai drama": 0, "china content": 0, "short platform": 0, "short drama": 0, "announces": 1
 }
 
 

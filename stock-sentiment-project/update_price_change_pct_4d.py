@@ -1,8 +1,4 @@
 import mysql.connector
-
-
-
-# Connect to MySQL database
 conn = mysql.connector.connect(
     host="localhost",
     user="root",
@@ -11,20 +7,20 @@ conn = mysql.connector.connect(
 )
 cursor = conn.cursor(dictionary=True)
 
-# Get all rows where we already have both price_at_time and price_1h_later, but did not calculate % yet
+# Get all rows where we already have both price_at_time and price_4d_later, but did not calculate % yet
 cursor.execute("""
-    SELECT id, price_at_time, price_1h_later
+    SELECT id, price_at_time, price_4d_later
     FROM headlines
-    WHERE price_change_pct_1h IS NULL
+    WHERE price_change_pct_4d IS NULL
       AND price_at_time IS NOT NULL
-      AND price_1h_later IS NOT NULL
+      AND price_4d_later IS NOT NULL
 """)
 rows = cursor.fetchall()
 
 for row in rows:
     headline_id = row['id']
     price_now = row['price_at_time']
-    price_1h = row['price_1h_later']
+    price_4d = row['price_4d_later']
 
     try:
         # Avoid dividing by zero if the price at time was zero just in case!!
@@ -32,25 +28,25 @@ for row in rows:
             continue
 
         # calculating the percentage change
-        pct_change = round(((price_1h - price_now) / price_now) * 100, 2)
+        pct_change = round(((price_4d - price_now) / price_now) * 100, 2)
 
         # Save that % change back into the headlines table
         cursor.execute("""
             UPDATE headlines
-            SET price_change_pct_1h = %s
+            SET price_change_pct_4d = %s
             WHERE id = %s
         """, (pct_change, headline_id))
         conn.commit()
 
-        print(f" ID {headline_id}: % change_1h = {pct_change}%")
+        print(f" ID {headline_id}: % change_4d = {pct_change}%")
 
     except Exception as e:
         # Catch any weird errors 
         print(f" Error on ID {headline_id}: {e}")
         continue
 
-
 # Close everything
 cursor.close()
 conn.close()
-print(" 1-hour percentage change update complete.")
+print(" 4-day percentage change update complete.")
+

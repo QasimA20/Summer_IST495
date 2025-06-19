@@ -28,16 +28,32 @@ for row in rows:
 
 
     # Count how many keywords were matched and then assign it a confidence level
-    
+
+        # Count matches
     num_matches = len(matches)
+
+    # Get the sentiment score for this headline
+    cursor.execute("SELECT sentiment_score FROM headlines WHERE id = %s", (headline_id,))
+    score_result = cursor.fetchone()
+    score = score_result['sentiment_score'] if score_result else 0.0
+
+    # New confidence logic based on matches + strength
+    #Don’t just trust how many things were said, trust how strong they are too.
+
     if num_matches == 0:
         confidence = "None"
     elif num_matches == 1:
         confidence = "Low"
     elif num_matches <= 3:
-        confidence = "Medium"
+        confidence = "Medium" if abs(score) >= 0.8 else "Low"
     else:
-        confidence = "High"
+        if abs(score) >= 0.8:
+            confidence = "High"
+        elif abs(score) >= 0.4:
+            confidence = "Medium"
+        else:
+            confidence = "Low"
+
 
     try:
         # Update the sentiment_confidence column in the database

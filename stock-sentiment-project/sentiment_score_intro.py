@@ -12,49 +12,61 @@ cursor = conn.cursor(dictionary=True)
 # Final merged sentiment dictionary (From student list)
 sentiment_dict = {
 
-    # Strong positive
-    "soars": 2, "surge": 2, "beat": 2, "growth": 2, "record": 2, "outperform": 2, "tops": 2, "celebrates": 2,
-    "profit": 2, "developing drug": 2, "developed immunotherapeutic drugs": 2,
-    "genetic medicine development": 2, "accelerating genetic medicine": 2, "more promising growth opportunities": 2,
-    
-    # Mild positive
-    "gain": 1, "up": 1, "buy": 1, "strong": 1, "launch": 1, "debuts": 1, "open": 1, "approve": 1,
-    "positive": 1, "expands": 1, "rebranding": 1, "supporting inventory growth": 1, "financing agreement": 1,
-    "debt payoff": 1, "material transfer agreement": 1, "potential acquisition": 1,
-    "agreement to merge": 1, "seeks to merge": 1, "agreement with leading": 1, "acquire substantially": 1,
-    "assumption agreement": 1, "acquire equity": 1, "premium": 1, "leading providers": 1,
-    "predicting growth": 1, "reports growth": 1, "nasdaq regain compliance": 1, "balance sheet increase": 1,
-    "total asset increase": 1, "asset increase": 1, "approval phase": 1, "pivotal phase": 1, "acquire": 1,
-    "favorable safety": 1, "not side affect": 1, "visit casino": 1, "chinese stimulus": 1, "innovative ai": 1,
-    "higher margin ads": 1, "goldman upgrade": 1, "morgan upgrade": 1, "brand leader": 1,
-    "authorizing quarterly dividend": 1, "quarterly dividend": 1, "monetary stimulus": 1,
-    "rate cuts": 1, "big cuts": 1, "research contract": 1, "advanced link terminals": 1,
-    "focus digital platforms": 1, "focus streaming platforms": 1, "promising growth": 1,
-    "quantum contract award": 1, "ai force research": 1, "enhancing customer support": 1,
-    "expanded service network": 1, "sufficient production capital": 1, "improve unit costs": 1,
-    "mass production": 1, "smart device lineup": 1, "expansion smart device": 1,
-    "interactive experience": 1, "help kids": 1, "make learning more": 1, "learning more engaging": 1,
-    "enhance memory retention": 1, "additional earn-out payment": 1, "additional payment": 1,
-    "owned subsidiary": 1, "accelerate business development": 1, "accelerate development": 1,
-    "accelerate growth": 1, "proposed purchase price": 1, "non-binding proposal": 1,
-    "pleased to announce": 1, "gold drilling completed": 1, "diamond drill completed": 1,
-    "receiving a grant": 1, "develop technology": 1, "commercial agreement": 1,
-    "supply alternative": 1, "successful launch": 1, "first income": 1, "strategic initiatives": 1,
-    "purchase premium": 1, "growth equity": 1, "increased investment": 1,
-    "enhancing long-term value": 1, "donation": 1, "partnership": 1, "donation and partnership": 1,
-    "social responsibility": 1, "strengthening public image": 1, "customer loyalty": 1,
-    "positive brand awareness": 1, "community support": 1, "boosting user activity": 1,
-    "won community": 1, "won award": 1, "reduce debt": 1, "monetizing asset": 1,
-    "attractive cap": 1, "strong support": 1, "accelerating development": 1, "expand treatment": 1, "surplus": 1,
+    # Strong positive (~1.0)
+    "soars": 1.0, "surge": 1.0, "beat": 1.0, "growth": 0.95, "record": 1.0, "outperform": 1.0, 
+    "tops": 0.9, "celebrates": 0.9, "profit": 0.95, "developing drug": 1.0,
+    "developed immunotherapeutic drugs": 1.0, "genetic medicine development": 1.0, 
+    "accelerating genetic medicine": 1.0, "more promising growth opportunities": 0.95,
 
-    # Negative
-    "miss": -2, "misses": -2, "lawsuit": -2, "down": -1, "cut": -1, "recall": -2, "fall": -1, "drop": -2,
-    "plunges": -2, "loss": -2, "warns": -2, "delay": -1, "fear": -1, "crash": -3, "struggle": -2, "negative": -1,
-    "definitive agreement": -1, "cramer optimistic": -1, "sue": -1, "monopoly": -1,
-    "reverse split": -1, "compliance ruling": -1, "court compliance": -1,
+    # Mild positive (~0.3 to 0.7)
+    "gain": 0.6, "up": 0.4, "buy": 0.4, "strong": 0.6, "launch": 0.5, "debuts": 0.5, 
+    "approve": 0.6, "positive": 0.5, "expands": 0.5, "rebranding": 0.3, 
+    "supporting inventory growth": 0.5, "financing agreement": 0.4, "debt payoff": 0.5,
+    "material transfer agreement": 0.3, "potential acquisition": 0.5, "agreement to merge": 0.5,
+    "seeks to merge": 0.4, "agreement with leading": 0.4, "acquire substantially": 0.5,
+    "assumption agreement": 0.3, "acquire equity": 0.5, "premium": 0.6, 
+    "leading providers": 0.4, "predicting growth": 0.5, "reports growth": 0.5,
+    "nasdaq regain compliance": 0.6, "balance sheet increase": 0.5, "total asset increase": 0.5,
+    "asset increase": 0.5, "approval phase": 0.6, "pivotal phase": 0.5, "acquire": 0.5,
+    "favorable safety": 0.6, "not side affect": 0.5, "visit casino": 0.3, "chinese stimulus": 0.6,
+    "innovative ai": 0.6, "higher margin ads": 0.7, "goldman upgrade": 0.7, "morgan upgrade": 0.7,
+    "brand leader": 0.5, "authorizing quarterly dividend": 0.6, "quarterly dividend": 0.5,
+    "monetary stimulus": 0.7, "rate cuts": 0.5, "big cuts": 0.5, "research contract": 0.4,
+    "advanced link terminals": 0.4, "focus digital platforms": 0.5,
+    "focus streaming platforms": 0.5, "promising growth": 0.5, "quantum contract award": 0.6,
+    "ai force research": 0.6, "enhancing customer support": 0.5, "expanded service network": 0.4,
+    "sufficient production capital": 0.5, "improve unit costs": 0.5, "mass production": 0.4,
+    "smart device lineup": 0.5, "expansion smart device": 0.4, "interactive experience": 0.4,
+    "help kids": 0.3, "make learning more": 0.4, "learning more engaging": 0.4,
+    "enhance memory retention": 0.4, "additional earn-out payment": 0.4,
+    "additional payment": 0.3, "owned subsidiary": 0.4, "accelerate business development": 0.6,
+    "accelerate development": 0.6, "accelerate growth": 0.6, "proposed purchase price": 0.3,
+    "non-binding proposal": 0.3, "pleased to announce": 0.5, "gold drilling completed": 0.4,
+    "diamond drill completed": 0.4, "receiving a grant": 0.4, "develop technology": 0.5,
+    "commercial agreement": 0.4, "supply alternative": 0.3, "successful launch": 0.6,
+    "first income": 0.5, "strategic initiatives": 0.4, "purchase premium": 0.5,
+    "growth equity": 0.6, "increased investment": 0.6, "enhancing long-term value": 0.6,
+    "donation": 0.4, "partnership": 0.4, "donation and partnership": 0.5,
+    "social responsibility": 0.4, "strengthening public image": 0.4, "customer loyalty": 0.4,
+    "positive brand awareness": 0.4, "community support": 0.5, "boosting user activity": 0.4,
+    "won community": 0.4, "won award": 0.5, "reduce debt": 0.5, "monetizing asset": 0.4,
+    "attractive cap": 0.4, "strong support": 0.4, "accelerating development": 0.6,
+    "expand treatment": 0.5, "surplus": 0.5,
 
-    # Neutral/monitor (no score, but matched)
-    "casino": 0, "ai drama": 0, "china content": 0, "short platform": 0, "short drama": 0, "announces": 1
+    # Negative (re-weighted and expanded)
+    "miss": -0.9, "misses": -0.9, "lawsuit": -0.8, "down": -0.6, "cut": -0.5, "recall": -0.8,
+    "fall": -0.6, "drop": -0.8, "plunges": -1.0, "loss": -0.9, "warns": -0.8, "delay": -0.6,
+    "fear": -0.5, "crash": -1.0, "struggle": -0.7, "negative": -0.5, "reverse split": -0.6,
+    "compliance ruling": -0.5, "court compliance": -0.5, "layoffs": -0.9,
+    "fired": -0.9, "investigation": -0.8, "fraud": -1.0, "downgrade": -0.8,
+    "short report": -0.7, "selloff": -0.9, "slump": -0.7, "decline": -0.6, "weakened": -0.6,
+    "bankruptcy": -1.0, "insider trading": -1.0, "data breach": -0.9, "hacked": -0.8,
+    "monopoly": -0.6, "sue": -0.7, "closed stores": -0.8, "delisting": -1.0,
+    "earnings miss": -0.8, "canceled contract": -0.9, "fined": -0.9, "legal challenge": -0.8,
+
+    # Neutral/monitor (0.0)
+    "casino": 0.0, "ai drama": 0.0, "china content": 0.0, "short platform": 0.0,
+    "short drama": 0.0, "announces": 0.0
 }
 
 
@@ -70,17 +82,21 @@ for row in rows:
     headline_id = row['id']
     headline = row['headline'].lower()
 
-    score = 0
+    matched_scores = []
     matches = []
 
-    # Count how many times each keyword appears in the headline
     for keyword, value in sentiment_dict.items():
         count = headline.count(keyword)
         if count > 0:
-            score += count * value # multiply by how many times it appears (this is to add more context to the sentiment)
-            matches.extend([keyword] * count)  # Repeat the word if it appears multiple times
+            matched_scores.extend([value] * count)  # Add the score N times
+            matches.extend([keyword] * count)
 
-    matched_str = ", ".join(matches) if matches else "none"
+    if matched_scores:
+        score = round(sum(matched_scores) / len(matched_scores), 3)  # use average
+        matched_str = ", ".join(matches)
+    else:
+        score = 0.0
+        matched_str = "none"
 
     # Save sentiment score
     cursor.execute("""
@@ -91,10 +107,6 @@ for row in rows:
     """, (score, matched_str, headline_id))
     conn.commit()
 
-    print(f" ID {headline_id}: score = {score}, keywords = {matched_str}")
+    print(f"ID {headline_id}: score = {score}, keywords = {matched_str}")
 
-
-cursor.close()
-conn.close()
-print(" Matched Keywords and Sentiment Scoring complete!")
 

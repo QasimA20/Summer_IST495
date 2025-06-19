@@ -31,8 +31,14 @@ SELECT
   headline,
   price_at_time,
   price_1h_later,
+  price_change_pct_1h,
+  price_4h_later,
+  price_change_pct_4h,
+  price_24h_later,
+  price_change_pct_24h,
   price_4d_later,
   price_change_pct_4d,
+  price_7d_later,
   sentiment_score,
   matched_keywords,
   sentiment_theme,
@@ -72,8 +78,14 @@ SHOW COLUMNS FROM headlines;
 
 
 
-ALTER TABLE headlines 
-MODIFY price_change_pct_1h DECIMAL(6,4);
+ALTER TABLE headlines
+MODIFY COLUMN sentiment_score DECIMAL(4,3);
+
+ALTER TABLE headlines
+MODIFY COLUMN price_7d_later DECIMAL(6,2);
+
+
+
 
 
 

@@ -70,6 +70,14 @@ for row in rows:
 
     headline = headline_tag.get_text(strip=True)
 
+    # Skip stock split headlines
+    if "reverse split" in headline.lower() or "stock split" in headline.lower():
+        with open("skipped_headlines.csv", "a") as file:
+            file.write(f"SKIPPED SPLIT: {headline}\n")
+        skipped += 1
+        continue
+
+
 
     # Scraping the *relative time* text and subtracting that amount from the current time.
     #First I I located the <td> tag containing the time info.

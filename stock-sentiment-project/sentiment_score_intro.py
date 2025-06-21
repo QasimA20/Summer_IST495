@@ -17,14 +17,17 @@ sentiment_dict = {
     "tops": 0.9, "celebrates": 0.9, "profit": 0.95, "developing drug": 1.0,
     "developed immunotherapeutic drugs": 1.0, "genetic medicine development": 1.0, 
     "accelerating genetic medicine": 1.0, "more promising growth opportunities": 0.95,
+    "record revenue": 1.0, "jumps": 0.8, "surges": 0.9, "breaks out": 0.8, "AI partnership": 0.7,
+    "AI investment": 0.7, "approval": 0.7, "winning": 0.7, "greenlight": 0.7,
+
 
     # Mild positive (~0.3 to 0.7)
     "gain": 0.6, "up": 0.4, "buy": 0.4, "strong": 0.6, "launch": 0.5, "debuts": 0.5, 
-    "approve": 0.6, "positive": 0.5, "expands": 0.5, "rebranding": 0.3, 
+    "approve": 0.6, "positive": 0.5, "expands": 0.5, "rebranding": 0.3, "innovation": 0.6,
     "supporting inventory growth": 0.5, "financing agreement": 0.4, "debt payoff": 0.5,
     "material transfer agreement": 0.3, "potential acquisition": 0.5, "agreement to merge": 0.5,
     "seeks to merge": 0.4, "agreement with leading": 0.4, "acquire substantially": 0.5,
-    "assumption agreement": 0.3, "acquire equity": 0.5, "premium": 0.6, 
+    "assumption agreement": 0.3, "acquire equity": 0.5, "premium": 0.6, "expansion": 0.5,
     "leading providers": 0.4, "predicting growth": 0.5, "reports growth": 0.5,
     "nasdaq regain compliance": 0.6, "balance sheet increase": 0.5, "total asset increase": 0.5,
     "asset increase": 0.5, "approval phase": 0.6, "pivotal phase": 0.5, "acquire": 0.5,
@@ -32,13 +35,13 @@ sentiment_dict = {
     "innovative ai": 0.6, "higher margin ads": 0.7, "goldman upgrade": 0.7, "morgan upgrade": 0.7,
     "brand leader": 0.5, "authorizing quarterly dividend": 0.6, "quarterly dividend": 0.5,
     "monetary stimulus": 0.7, "rate cuts": 0.5, "big cuts": 0.5, "research contract": 0.4,
-    "advanced link terminals": 0.4, "focus digital platforms": 0.5,
+    "advanced link terminals": 0.4, "focus digital platforms": 0.5, "investment": 0.4,
     "focus streaming platforms": 0.5, "promising growth": 0.5, "quantum contract award": 0.6,
     "ai force research": 0.6, "enhancing customer support": 0.5, "expanded service network": 0.4,
     "sufficient production capital": 0.5, "improve unit costs": 0.5, "mass production": 0.4,
     "smart device lineup": 0.5, "expansion smart device": 0.4, "interactive experience": 0.4,
     "help kids": 0.3, "make learning more": 0.4, "learning more engaging": 0.4,
-    "enhance memory retention": 0.4, "additional earn-out payment": 0.4,
+    "enhance memory retention": 0.4, "additional earn-out payment": 0.4, "modernize": 0.4,
     "additional payment": 0.3, "owned subsidiary": 0.4, "accelerate business development": 0.6,
     "accelerate development": 0.6, "accelerate growth": 0.6, "proposed purchase price": 0.3,
     "non-binding proposal": 0.3, "pleased to announce": 0.5, "gold drilling completed": 0.4,
@@ -46,25 +49,36 @@ sentiment_dict = {
     "commercial agreement": 0.4, "supply alternative": 0.3, "successful launch": 0.6,
     "first income": 0.5, "strategic initiatives": 0.4, "purchase premium": 0.5,
     "growth equity": 0.6, "increased investment": 0.6, "enhancing long-term value": 0.6,
-    "donation": 0.4, "partnership": 0.4, "donation and partnership": 0.5,
+    "donation": 0.4, "partnership": 0.4, "donation and partnership": 0.5, "improves": 0.4,
     "social responsibility": 0.4, "strengthening public image": 0.4, "customer loyalty": 0.4,
     "positive brand awareness": 0.4, "community support": 0.5, "boosting user activity": 0.4,
     "won community": 0.4, "won award": 0.5, "reduce debt": 0.5, "monetizing asset": 0.4,
     "attractive cap": 0.4, "strong support": 0.4, "accelerating development": 0.6,
-    "expand treatment": 0.5, "surplus": 0.5,
+    "expand treatment": 0.5, "surplus": 0.5, "opens": 0.5, "rebound": 0.4, "boost": 0.5,
+     "AI tools": 0.6, "cloud acceleration": 0.6, "first quarter results": 0.4, "agreement": 0.3, "adds": 0.3, 
+    "incremental loan": 0.4,  "restructuring": 0.3, "opens facility": 0.4, "expands service": 0.5,
+    "resume shipments": 0.4, "collaboration": 0.5, "surprise win": 0.6, "AI expansion": 0.6, "launches AI model": 0.5,
 
-    # Negative (re-weighted and expanded)
+
+    # Negative (re-weighted )
     "miss": -0.9, "misses": -0.9, "lawsuit": -0.8, "down": -0.6, "cut": -0.5, "recall": -0.8,
     "fall": -0.6, "drop": -0.8, "plunges": -1.0, "loss": -0.9, "warns": -0.8, "delay": -0.6,
     "fear": -0.5, "crash": -1.0, "struggle": -0.7, "negative": -0.5, "reverse split": -0.6,
-    "compliance ruling": -0.5, "court compliance": -0.5, "layoffs": -0.9,
+    "compliance ruling": -0.5, "court compliance": -0.5, "layoffs": -0.9, "plummeted": -1.0,
     "fired": -0.9, "investigation": -0.8, "fraud": -1.0, "downgrade": -0.8,
     "short report": -0.7, "selloff": -0.9, "slump": -0.7, "decline": -0.6, "weakened": -0.6,
     "bankruptcy": -1.0, "insider trading": -1.0, "data breach": -0.9, "hacked": -0.8,
     "monopoly": -0.6, "sue": -0.7, "closed stores": -0.8, "delisting": -1.0,
     "earnings miss": -0.8, "canceled contract": -0.9, "fined": -0.9, "legal challenge": -0.8,
+    "slowing": -0.5, "concerns": -0.4, "delays": -0.6, "uncertainty": -0.5, "feud": -0.6, 
+    "dispute": -0.6, "tariff impact": -0.6, "conflict": -0.6, "regulatory hurdles": -0.5, 
+    "immigration raid": -0.7, "valuation trap": -0.7, "shutdown": -0.8, "choppy market": -0.4,
 
-    # Neutral/monitor (0.0)
+    #Specific Negs
+    "reverse stock split": -0.9, "restructuring layoffs": -0.8, "executive exits": -0.6, 
+    "shareholder lawsuit": -0.9, "trading halted": -1.0,
+
+    # Neutral/monitor for now (0.0)
     "casino": 0.0, "ai drama": 0.0, "china content": 0.0, "short platform": 0.0,
     "short drama": 0.0, "announces": 0.0
 }

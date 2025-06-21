@@ -39,6 +39,7 @@ SELECT
   price_4d_later,
   price_change_pct_4d,
   price_7d_later,
+  price_change_pct_7d,
   sentiment_score,
   matched_keywords,
   sentiment_theme,
@@ -83,6 +84,20 @@ MODIFY COLUMN sentiment_score DECIMAL(4,3);
 
 ALTER TABLE headlines
 MODIFY COLUMN price_7d_later DECIMAL(6,2);
+
+
+
+ALTER TABLE headlines
+MODIFY COLUMN price_change_pct_7d DECIMAL(7,2);
+
+SELECT id, ticker, headline, date
+FROM headlines
+WHERE headline LIKE '%reverse split%' OR headline LIKE '%stock split%';
+
+
+
+
+
 
 
 

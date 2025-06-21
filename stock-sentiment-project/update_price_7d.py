@@ -17,7 +17,6 @@ cursor.execute("""
     SELECT id, ticker, date
     FROM headlines
     WHERE price_7d_later IS NULL
-    LIMIT 5
 """)
 rows = cursor.fetchall()
 

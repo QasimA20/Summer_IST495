@@ -46,10 +46,11 @@ SELECT
   sentiment_label,
   sentiment_confidence,
   DATE_FORMAT(date, '%Y-%m-%d %H:%i:%s') AS clean_date
-FROM headlines
+FROM headlines;
+/*
 WHERE date >= CURDATE() - INTERVAL 10 DAY
   AND WEEKDAY(date) < 5;
-
+*/
 
 
 SELECT * FROM headlines

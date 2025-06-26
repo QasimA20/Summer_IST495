@@ -95,6 +95,20 @@ SELECT id, ticker, headline, date
 FROM headlines
 WHERE headline LIKE '%reverse split%' OR headline LIKE '%stock split%';
 
+/*
+SELECT ticker, COUNT(*) AS headline_count
+FROM headlines
+WHERE 
+    price_change_pct_1h IS NOT NULL AND
+    price_change_pct_4h IS NOT NULL AND
+    price_change_pct_24h IS NOT NULL AND
+    price_change_pct_4d IS NOT NULL AND
+    price_change_pct_7d IS NOT NULL
+GROUP BY ticker
+ORDER BY headline_count DESC
+LIMIT 5;
+*/
+
 
 
 

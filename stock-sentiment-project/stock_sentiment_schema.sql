@@ -42,11 +42,13 @@ SELECT
   price_change_pct_7d,
   sentiment_score,
   matched_keywords,
-  sentiment_theme,
   sentiment_label,
   sentiment_confidence,
+  industry,
+  sector,
   DATE_FORMAT(date, '%Y-%m-%d %H:%i:%s') AS clean_date
 FROM headlines;
+
 /*
 WHERE date >= CURDATE() - INTERVAL 10 DAY
   AND WEEKDAY(date) < 5;

@@ -24,10 +24,11 @@ ORDER BY id DESC
 LIMIT 5;
 
 
-
 SELECT
   id,
   ticker,
+  sector,
+  industry,
   headline,
   price_at_time,
   price_1h_later,
@@ -44,8 +45,6 @@ SELECT
   matched_keywords,
   sentiment_label,
   sentiment_confidence,
-  industry,
-  sector,
   DATE_FORMAT(date, '%Y-%m-%d %H:%i:%s') AS clean_date
 FROM headlines;
 
@@ -110,6 +109,10 @@ GROUP BY ticker
 ORDER BY headline_count DESC
 LIMIT 5;
 */
+
+
+
+
 
 
 

@@ -18,6 +18,7 @@ cursor.execute("""
     SELECT id, ticker, date 
     FROM headlines 
     WHERE price_1h_later IS NULL
+    LIMIT 300
 """)
 rows = cursor.fetchall()
 

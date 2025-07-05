@@ -20,6 +20,7 @@ cursor.execute("""
     SELECT id, ticker, date 
     FROM headlines 
     WHERE price_at_time IS NULL 
+    LIMIT 10
 """)
 rows = cursor.fetchall()
 
@@ -28,6 +29,12 @@ for row in rows:
     headline_id = row['id']
     ticker = row['ticker']
     timestamp = row['date']
+
+    # Sanitize ticker: remove $ if present and force uppercase
+    #ticker = ticker.strip().upper()
+    #if ticker.startswith('$'):
+        #ticker = ticker[1:]
+
 
     try:
         # Skip future timestamps

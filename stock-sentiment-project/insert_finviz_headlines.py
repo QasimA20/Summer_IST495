@@ -7,6 +7,20 @@ import mysql.connector
 import pandas as pd
 import re
 
+
+now = datetime.now()
+
+print(f"Script ran at {datetime.now()}")
+with open("/tmp/headlinefetcher.out", "a") as f:
+    f.write(f"[launchd] Script ran at {datetime.now()}\n")
+
+
+# Only run during market hours: Monday–Friday, 9:00 AM to 4:30 PM
+if now.weekday() >= 5 or now.hour < 9 or (now.hour == 16 and now.minute > 30) or now.hour > 16:
+    print(f"Skipped at {now} (outside market hours)")
+    exit()
+
+
 # MySQL connection with my password
 conn = mysql.connector.connect(
     host="localhost",
@@ -16,20 +30,38 @@ conn = mysql.connector.connect(
 )
 cursor = conn.cursor()
 
+
+try:
+    valid_tickers = set(pd.read_csv("/Users/qasim/finviz.csv")["Ticker"])
+
+except Exception as e:
+    print(f"❌ ERROR loading CSV: {e}")
+    valid_tickers = set()
+
+
 # Load valid tickers from finviz.csv
-valid_tickers = set(pd.read_csv("/Users/qasim/Documents/Analyzer Internship Project/Summer_IST495/stock-sentiment-project/finviz.csv")["Ticker"])
+#valid_tickers = set(pd.read_csv("/Users/qasim/Documents/Analyzer Internship Project/Summer_IST495/stock-sentiment-project/finviz.csv")["Ticker"])
+#valid_tickers = set(pd.read_csv("/Users/qasim/finviz.csv")["Ticker"])
+
 
 # Create the scraper
 # I discovered this library after regular requests and Selenium kept getting blocked.
 scraper = cloudscraper.create_scraper()
+
+
+
 url = "https://finviz.com/news.ashx?v=3"  # URL of the Finviz news page
 response = scraper.get(url)
 
 # Parse the HTML using BeautifulSoup
 soup = BeautifulSoup(response.content, "html.parser")  # Parses the page content
+
 rows = soup.find_all("tr")  # This finds all table rows 
 
+
 print(f"Found {len(rows)} rows!\n")
+print("Now beginning insert attempts...")
+
 
 # This SQL query is written as a Python string 
 # and sent to MySQL using the cursor.
@@ -46,6 +78,7 @@ skipped = 0
 
 # Loop through each of the rows
 for row in rows:
+
     # Finds the <a> tag linking to a stock's quote page, which contains the ticker
     # I found this out by inspecting the html page
     ticker_tag = row.select_one('a[href^="/quote.ashx?t="]') 
@@ -105,11 +138,13 @@ for row in rows:
         continue
 
     #print(f"Extracted time from Finviz: {timestamp}")
+    #print(f"🧾 Preparing insert: Ticker={ticker}, Headline={headline}, Timestamp={timestamp}")
     values = (ticker, headline, timestamp, None, None)
     cursor.execute(query, values)
     inserted += 1
     print(f"[{timestamp}] [{ticker}] {headline}")
 
+   
 # Finalize the MySQL changes
 conn.commit()
 cursor.close()

@@ -18,7 +18,8 @@ sentiment_dict = {
     "developed immunotherapeutic drugs": 1.0, "genetic medicine development": 1.0, 
     "accelerating genetic medicine": 1.0, "more promising growth opportunities": 0.95,
     "record revenue": 1.0, "jumps": 0.8, "surges": 0.9, "breaks out": 0.8, "AI partnership": 0.7,
-    "AI investment": 0.7, "approval": 0.7, "winning": 0.7, "greenlight": 0.7,
+    "AI investment": 0.7, "approval": 0.7, "winning": 0.7, "greenlight": 0.7, "jumped": 0.6,
+    "soared": 0.6,
 
 
     # Mild positive (~0.3 to 0.7)
@@ -58,29 +59,76 @@ sentiment_dict = {
      "AI tools": 0.6, "cloud acceleration": 0.6, "first quarter results": 0.4, "agreement": 0.3, "adds": 0.3, 
     "incremental loan": 0.4,  "restructuring": 0.3, "opens facility": 0.4, "expands service": 0.5,
     "resume shipments": 0.4, "collaboration": 0.5, "surprise win": 0.6, "AI expansion": 0.6, "launches AI model": 0.5,
+    "declares dividend": 0.3, "declares cash dividend": 0.4, "declares quarterly cash dividend": 0.4,
+    "declares monthly cash dividend": 0.4, "dividend": 0.3, "cash dividend": 0.4, "quarterly dividend": 0.3, "monthly dividend": 0.3,
+    "preferred dividend": 0.2, "distribution": 0.2, "declares distribution": 0.3, "regular dividend": 0.3, "income fund declares": 0.3,
+    "partners with": 0.3, "help banks test AI tools": 0.4, "open its AI models": 0.3, "build first industrial AI cloud": 0.4,
+    "maintains healthy fundamentals": 0.4, "attracts": 0.4, "broadens drone delivery service": 0.3, "secures": 0.3,
+    "restarts shipments": 0.4, "achieves primary endpoint": 0.5, "bets big": 0.4, "digital makeover": 0.3, "revenue potential": 0.4,
+    "expand into": 0.3, "preps overhaul": 0.3, "unveils": 0.2, "raises forecast": 0.4, "bull case for stocks": 0.4,
+    "unlock real estate liquidity": 0.3, "highlighting strategic progress": 0.3, "first fully-licensed ai video model": 0.4,
+    "strategic integration": 0.3, "enhance digital engagement": 0.3, "midyear outlook": 0.2, "pragmatic optimism": 0.3,
+    "top 100 rankings": 0.3, "new numbers": 0.2, "releases strong earnings": 0.3, "releases new product": 0.3,
+    "releases new model": 0.3, "releases new feature": 0.3, "releases beta version": 0.2, "releases cloud platform": 0.4,
+    "releases software update": 0.3, "releases ai tool": 0.4, "releases guidance": 0.2, "achieves": 0.5, "potential": 0.2,
+    "advance ai": 0.4, "thanks": 0.2, "appoints": 0.2, "jumping": 0.5, "climbs": 0.4, "soaring": 0.6, "ranks": 0.3,
+    "increases stake": 0.4, "all-time high": 0.5, "grants": 0.2, "introduces": 0.3, "selected": 0.3, "rise": 0.3,
+    "integration": 0.3, "grand opening": 0.3, "unveils new": 0.3, "sale": 0.2, "signs deal": 0.4, "new highs": 0.4,
+    "restarts": 0.4, "stock repurchase program": 0.5, "acquisition": 0.4, "new corporate name": 0.1, "appoints chief financial officer": 0.2,
+    "new cfo": 0.2,  "acquires": 0.4, "joint venture": 0.3, "solar installation": 0.3, "promotion": 0.2,
+    "successful renewal": 0.4, "acquisition of infill portfolio": 0.4, "build a hospital": 0.4, "announces new chief": 0.2,
 
 
-    # Negative (re-weighted )
+
+    # Strong Negative 
     "miss": -0.9, "misses": -0.9, "lawsuit": -0.8, "down": -0.6, "cut": -0.5, "recall": -0.8,
-    "fall": -0.6, "drop": -0.8, "plunges": -1.0, "loss": -0.9, "warns": -0.8, "delay": -0.6,
+    "fall": -0.6, "drop": -0.8, "reverse stock split": -0.9, "restructuring layoffs": -0.8, 
+    "executive exits": -0.6, "shareholder lawsuit": -0.9, "trading halted": -1.0, "releases disappointing earnings": -0.6,
+    "loss": -0.9, "warns": -0.8, "delay": -0.6, "trap": -0.7,
     "fear": -0.5, "crash": -1.0, "struggle": -0.7, "negative": -0.5, "reverse split": -0.6,
     "compliance ruling": -0.5, "court compliance": -0.5, "layoffs": -0.9, "plummeted": -1.0,
     "fired": -0.9, "investigation": -0.8, "fraud": -1.0, "downgrade": -0.8,
     "short report": -0.7, "selloff": -0.9, "slump": -0.7, "decline": -0.6, "weakened": -0.6,
     "bankruptcy": -1.0, "insider trading": -1.0, "data breach": -0.9, "hacked": -0.8,
-    "monopoly": -0.6, "sue": -0.7, "closed stores": -0.8, "delisting": -1.0,
+    "monopoly": -0.6, "sue": -0.7, "closed stores": -0.8, "delisting": -1.0, "plunges": -1.0, 
     "earnings miss": -0.8, "canceled contract": -0.9, "fined": -0.9, "legal challenge": -0.8,
     "slowing": -0.5, "concerns": -0.4, "delays": -0.6, "uncertainty": -0.5, "feud": -0.6, 
     "dispute": -0.6, "tariff impact": -0.6, "conflict": -0.6, "regulatory hurdles": -0.5, 
-    "immigration raid": -0.7, "valuation trap": -0.7, "shutdown": -0.8, "choppy market": -0.4,
+    "immigration raid": -0.7, "valuation trap": -0.7, "shutdown": -0.8, "stock looks like it's in trouble": -0.6,
+    "releases fraud investigation results": -0.7, "releases bankruptcy statement": -1.0,
+    "guidance cut": -0.7, "slashing forecast": -0.8, "warns of slowdown": -0.7, "disappoints investors": -0.6,
+    "regulatory probe": -0.8, "investigation launched": -0.7, "ceo steps down": -0.6, "executive departure": -0.6,
+    "missed expectations": -0.8, "pulls guidance": -0.8, "dividend suspended": -0.9, "cash burn": -0.7,
+    "cutting workforce": -0.8, "restructuring plan": -0.5, "dilution": -0.6, "raises debt": -0.5, "revises outlook lower": -0.7,
+    "sec charges": -1.0, "settles fraud charges": -0.9, "product defect": -0.8, "safety issue": -0.7, "delays product launch": -0.6,
+    "cutting dividend": -0.8, "material weakness": -0.8, "trash": -0.6, "slashes": -0.6, "tumbles": -0.8, "proposes ban": -0.6,
 
-    #Specific Negs
-    "reverse stock split": -0.9, "restructuring layoffs": -0.8, "executive exits": -0.6, 
-    "shareholder lawsuit": -0.9, "trading halted": -1.0,
+
+
+    #Mild Negs
+    "choppy market": -0.4, "anything but trash": -0.5, "being choppier": -0.3, "mulls sale of": -0.2, 
+    "gloomy about economy": -0.4, "what the chart says may come next": -0.2,
+    "releases weak guidance": -0.5, "releases layoffs plan": -0.4, "releases restated earnings": -0.6,
+    "releases downward revision": -0.5, "under pressure": -0.3, "uncertain outlook": -0.4,
+    "market headwinds": -0.3, "demand slowdown": -0.4, "weaker-than-expected": -0.4, "execution risk": -0.3,
+    "missed deadline": -0.3, "volatile trading": -0.3, "slight miss": -0.3, "tumbles slightly": -0.3,
+    "trimming forecast": -0.4, "elevated risk": -0.3, "market volatility": -0.3, "profit warning": -0.4,
+    "underperformance": -0.3, "tightening conditions": -0.3, "revises outlook": -0.3, "sales below forecast": -0.4,
+    "margins under pressure": -0.4, "rising costs": -0.3, "slower growth": -0.4, "falling short": -0.4, "guidance uncertainty": -0.3,
+    "increased competition": -0.3, "fading": -0.3, "inflation": -0.4, "slow": -0.3, "all-time low": -0.5,
+    "struggling": -0.6, "worries": -0.4, "new lows": -0.4, "maintains a hold rating": -0.2, "keeps a hold rating": -0.2,
+    "reiterates a hold rating": -0.2, "closes public offering": -0.2, "reopening convertible notes": -0.3,
+    "pricing of senior notes": -0.3, "debt refinancing": -0.2, "adjournment of annual meeting": -0.3,
+    "reschedules earnings release": -0.3, "closing of secondary offering": -0.2, "liquidation of funds": -0.4,
+    "senior unsecured notes": -0.3, "announces closing of secondary public offering": -0.3, "announces closing": -0.2,
+
+
+
+
 
     # Neutral/monitor for now (0.0)
     "casino": 0.0, "ai drama": 0.0, "china content": 0.0, "short platform": 0.0,
-    "short drama": 0.0, "announces": 0.0
+    "short drama": 0.0, 
 }
 
 

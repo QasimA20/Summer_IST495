@@ -137,6 +137,12 @@ for row in rows:
         skipped += 1
         continue
 
+    # Skip headlines before 9:00 AM
+    if timestamp.hour < 9:
+        print(f"⏱️ Skipping early headline at {timestamp.strftime('%Y-%m-%d %H:%M:%S')}")
+        skipped += 1
+        continue
+
     #print(f"Extracted time from Finviz: {timestamp}")
     #print(f"🧾 Preparing insert: Ticker={ticker}, Headline={headline}, Timestamp={timestamp}")
     values = (ticker, headline, timestamp, None, None)

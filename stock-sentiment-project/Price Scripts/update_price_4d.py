@@ -18,6 +18,7 @@ cursor.execute("""
     SELECT id, ticker, date
     FROM headlines
     WHERE price_4d_later IS NULL
+    LIMIT 10
 """)
 rows = cursor.fetchall()
 

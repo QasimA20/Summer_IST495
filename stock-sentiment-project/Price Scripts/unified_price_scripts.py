@@ -26,21 +26,38 @@ print(f"\n Script started at {now.strftime('%Y-%m-%d %H:%M:%S')}")
 def get_price_at(ticker, dt):
     try:
         # Try fetching precise 1-minute data (first attempt)
+        #data = yf.Ticker(ticker).history(
+            #start=dt,
+            #end=dt + timedelta(minutes=15),
+            #interval="1m"
+        #)
+
         data = yf.Ticker(ticker).history(
-            start=dt,
-            end=dt + timedelta(minutes=15),
+            start=dt - timedelta(minutes=30),
+            end=dt + timedelta(minutes=30),
             interval="1m"
         )
+        
 
         if not data.empty:
             return round(data["Close"].iloc[0], 2)
 
         # --- Fallback using your original hourly logic ---
-        start_date = dt.strftime('%Y-%m-%d')
-        end_date = (dt + timedelta(days=1)).strftime('%Y-%m-%d')
+        #start_date = dt.strftime('%Y-%m-%d')
+        #end_date = (dt + timedelta(days=1)).strftime('%Y-%m-%d')
+
+        #stock = yf.Ticker(ticker)
+        #hist = stock.history(start=start_date, end=end_date, interval='1h')
+
+        # --- Fallback using wider hourly range (fix for missing data) ---
+        start_date = (dt - timedelta(days=1)).strftime('%Y-%m-%d')
+        end_date = (dt + timedelta(days=2)).strftime('%Y-%m-%d')
 
         stock = yf.Ticker(ticker)
+        print(f"⏳ Fallback for {ticker}: {start_date} → {end_date}")
         hist = stock.history(start=start_date, end=end_date, interval='1h')
+
+
 
         if hist.empty:
             print(f"No price data for fallback ID ({ticker}) at {dt}")
@@ -60,7 +77,7 @@ def get_price_at(ticker, dt):
         return None
 
 
-max_updates = 150
+max_updates = 200
 update_count = 0
 
 # -Fill in price_at_time if missing 
@@ -90,7 +107,7 @@ for row in rows:
         cursor.execute("UPDATE headlines SET price_at_time = %s WHERE id = %s", (float(price), row["id"]))
         conn.commit()
         update_count += 1
-        print(f"\n✅ Updated price_at_time for {row['ticker']} at {row['date']} to {price}")
+        print(f"✅ Updated price_at_time for {row['ticker']} at {row['date']} to {price}\n")
 
     if update_count >= max_updates:
         break

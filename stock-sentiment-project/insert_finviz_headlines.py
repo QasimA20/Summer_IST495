@@ -16,7 +16,7 @@ with open("/tmp/headlinefetcher.out", "a") as f:
 
 
 # Only run during market hours: Monday–Friday, 9:00 AM to 4:30 PM
-if now.weekday() >= 5 or now.hour < 9 or (now.hour == 16 and now.minute > 30) or now.hour > 16:
+if now.weekday() >= 5 or now.hour < 9 or now.hour >= 16:
     print(f"Skipped at {now} (outside market hours)")
     exit()
 

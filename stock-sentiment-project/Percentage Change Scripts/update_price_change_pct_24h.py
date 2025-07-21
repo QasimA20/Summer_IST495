@@ -22,10 +22,7 @@ for row in rows:
     price_now = row['price_at_time']
     price_24h = row.get('price_24h_later')
 
-    # Skip zero prices
-    if not price_now or price_now == 0:
-        continue
-
+   
     # Calculating 24-hour percentage change
     pct_24h = round(((price_24h - price_now) / price_now) * 100, 2)
 

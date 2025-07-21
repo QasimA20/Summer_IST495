@@ -6,9 +6,8 @@ import yfinance as yf
 from datetime import datetime, timedelta
 import time
 import numpy as np
-
-from datetime import datetime
-
+from pandas.tseries.offsets import BDay
+import pandas as pd
 
 conn = mysql.connector.connect(
     host="localhost",
@@ -18,6 +17,8 @@ conn = mysql.connector.connect(
 )
 cursor = conn.cursor(dictionary=True)
 now = datetime.now()
+cutoff = pd.Timestamp.now() - BDay(7)
+
 
 print(f"\n Script started at {now.strftime('%Y-%m-%d %H:%M:%S')}")
 
@@ -91,6 +92,12 @@ cursor.execute("""
 """, (max_updates,))
 rows = cursor.fetchall()
 
+
+from pandas.tseries.offsets import BDay
+import pandas as pd
+
+rows = [row for row in rows if pd.Timestamp(row["date"]) >= cutoff]
+
 for row in rows:
    # price = get_price_at(row["ticker"], row["date"])
 
@@ -118,8 +125,10 @@ price_fields = {
     'price_1h_later': timedelta(hours=1),
     'price_4h_later': timedelta(hours=4),
     'price_24h_later': timedelta(hours=24),
-    'price_4d_later': timedelta(days=4),
-    'price_7d_later': timedelta(days=7)
+    'price_4d_later': BDay(4),      # business days, not calendar days
+    'price_7d_later': BDay(7)       # business days, not calendar days
+    #'price_4d_later': timedelta(days=4),
+    #'price_7d_later': timedelta(days=7)
 }
 
 for field, wait_time in price_fields.items():
@@ -136,11 +145,25 @@ for field, wait_time in price_fields.items():
         ORDER BY date ASC
         LIMIT %s
     """
-    cursor.execute(query, (now - wait_time, max_updates - update_count))
+
+    cutoff_time = now - wait_time
+    if hasattr(cutoff_time, 'to_pydatetime'):
+        cutoff_time = cutoff_time.to_pydatetime()
+
+    cursor.execute(query, (cutoff_time, max_updates - update_count))
+
+
+    #cursor.execute(query, (now - wait_time, max_updates - update_count))
     rows = cursor.fetchall()
 
+    rows = [row for row in rows if pd.Timestamp(row["date"]) >= cutoff]
+
+
     for row in rows:
-        target_time = row["date"] + wait_time
+        #target_time = row["date"] + wait_time
+        # Handles both timedelta and BDay correctly
+        target_time = wait_time + row["date"]
+
         price = get_price_at(row["ticker"], target_time)
         if price is not None:
             update_query = f"UPDATE headlines SET {field} = %s WHERE id = %s"

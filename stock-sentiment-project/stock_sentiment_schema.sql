@@ -45,8 +45,17 @@ SELECT
   matched_keywords,
   sentiment_label,
   sentiment_confidence,
+  confidence_score,
   DATE_FORMAT(date, '%Y-%m-%d %H:%i:%s') AS clean_date
-FROM headlines;
+FROM headlines
+WHERE date >= CURDATE() - INTERVAL 10 DAY
+  AND WEEKDAY(date) < 5;
+
+
+SELECT headline, sentiment_score, price_1h_later, price_4h_later, price_24h_later, price_4d_later, price_7d_later
+FROM headlines
+WHERE sentiment_score IS NOT NULL;
+
 
 /*
 WHERE date >= CURDATE() - INTERVAL 10 DAY
@@ -96,6 +105,9 @@ SELECT id, ticker, headline, date
 FROM headlines
 WHERE headline LIKE '%reverse split%' OR headline LIKE '%stock split%';
 
+SHOW COLUMNS FROM headlines LIKE 'confidence_score';
+
+
 /*
 SELECT ticker, COUNT(*) AS headline_count
 FROM headlines
@@ -110,12 +122,23 @@ ORDER BY headline_count DESC
 LIMIT 5;
 */
 
-
-
-
-
-
-
+SELECT 
+  id,
+  ticker,
+  headline,
+  sentiment_score,
+  sentiment_label,
+  price_change_pct_1h,
+  price_label_1h,
+  price_change_pct_4h,
+  price_label_4h,
+  price_change_pct_24h,
+  price_label_24h,
+  price_change_pct_4d,
+  price_label_4d,
+  price_change_pct_7d,
+  price_label_7d
+FROM headlines;
 
 
 

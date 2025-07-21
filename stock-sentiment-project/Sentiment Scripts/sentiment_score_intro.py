@@ -124,8 +124,6 @@ sentiment_dict = {
 
 
 
-
-
     # Neutral/monitor for now (0.0)
     "casino": 0.0, "ai drama": 0.0, "china content": 0.0, "short platform": 0.0,
     "short drama": 0.0, 
@@ -155,20 +153,46 @@ for row in rows:
 
     if matched_scores:
         score = round(sum(matched_scores) / len(matched_scores), 3)  # use average
+        confidence_score = round(sum(abs(val) for val in matched_scores) / len(matched_scores), 3)
         matched_str = ", ".join(matches)
     else:
         score = 0.0
+        confidence_score = 0.0
         matched_str = "none"
 
-    # Save sentiment score
+    # assign sentiment label based on score
+    if score > 0.05:
+        sentiment_label = "Positive"
+    elif score < -0.05:
+        sentiment_label = "Negative"
+    else:
+        sentiment_label = "Neutral"
+
+    # assign confidence level based on confidence score
+    if confidence_score >= 0.6:
+        sentiment_confidence = "High"
+    elif confidence_score >= 0.3:
+        sentiment_confidence = "Medium"
+    else:
+        sentiment_confidence = "Low"
+
+    # Save everything into MySQL
     cursor.execute("""
         UPDATE headlines
         SET sentiment_score = %s,
-            matched_keywords = %s
+            matched_keywords = %s,
+            confidence_score = %s,
+            sentiment_label = %s,
+            sentiment_confidence = %s
         WHERE id = %s
-    """, (score, matched_str, headline_id))
+    """, (score, matched_str, confidence_score, sentiment_label, sentiment_confidence, headline_id))
+
     conn.commit()
 
-    print(f"ID {headline_id}: score = {score}, keywords = {matched_str}")
+    print(f"ID {headline_id}: score = {score}, label = {sentiment_label}, confidence = {confidence_score} ({sentiment_confidence}), keywords = {matched_str}")
+
+cursor.close()
+conn.close()
+print("✅ Sentiment tagging complete.")
 
 

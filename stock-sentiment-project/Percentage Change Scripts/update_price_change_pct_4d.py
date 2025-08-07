@@ -11,11 +11,13 @@ cursor = conn.cursor(dictionary=True)
 cursor.execute("""
     SELECT id, price_at_time, price_4d_later
     FROM headlines
-    WHERE price_change_pct_4d IS NULL
-      AND price_at_time IS NOT NULL
-      AND price_4d_later IS NOT NULL
+    WHERE 
+        price_change_pct_4d IS NULL
+        AND price_4d_later IS NOT NULL
+        AND date >= CURDATE() - INTERVAL 10 DAY
 """)
 rows = cursor.fetchall()
+
 
 for row in rows:
     headline_id = row['id']

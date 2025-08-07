@@ -8,13 +8,18 @@ conn = mysql.connector.connect(
 cursor = conn.cursor(dictionary=True)
 
 # rows where 1h percentage change hasn't been calculated yet
+
 cursor.execute("""
     SELECT id, price_at_time, price_1h_later
     FROM headlines
     WHERE 
-        price_change_pct_1h IS NULL AND price_1h_later IS NOT NULL
+        price_change_pct_1h IS NULL
+        AND price_1h_later IS NOT NULL
+        AND date >= CURDATE() - INTERVAL 10 DAY
 """)
 rows = cursor.fetchall()
+
+
 
 for row in rows:
     headline_id = row['id']

@@ -13,9 +13,12 @@ cursor.execute("""
     SELECT id, price_at_time, price_24h_later
     FROM headlines
     WHERE 
-        price_change_pct_24h IS NULL AND price_24h_later IS NOT NULL
+        price_change_pct_24h IS NULL
+        AND price_24h_later IS NOT NULL
+        AND date >= CURDATE() - INTERVAL 10 DAY
 """)
 rows = cursor.fetchall()
+
 
 for row in rows:
     headline_id = row['id']

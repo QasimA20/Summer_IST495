@@ -82,7 +82,7 @@ WHERE price_at_time IS NOT NULL AND price_1h_later IS NOT NULL;
 
 
 ALTER TABLE headlines 
-MODIFY price_change_pct_4d DECIMAL(6,4);
+MODIFY price_change_pct_4d DECIMAL(7,2);
 
 
 
@@ -139,6 +139,19 @@ SELECT
   price_change_pct_7d,
   price_label_7d
 FROM headlines;
+
+
+SELECT
+  ticker,
+  headline,
+  price_at_time,
+  sentiment_score
+FROM headlines;
+
+
+
+
+
 
 
 

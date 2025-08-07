@@ -125,8 +125,8 @@ sentiment_dict = {
 
 
     # Neutral/monitor for now (0.0)
-    "casino": 0.0, "ai drama": 0.0, "china content": 0.0, "short platform": 0.0,
-    "short drama": 0.0, 
+    #"casino": 0.0, "ai drama": 0.0, "china content": 0.0, "short platform": 0.0,
+    #"short drama": 0.0, 
 }
 
 

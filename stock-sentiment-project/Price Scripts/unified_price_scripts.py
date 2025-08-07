@@ -78,7 +78,7 @@ def get_price_at(ticker, dt):
         return None
 
 
-max_updates = 200
+max_updates = 250
 update_count = 0
 
 # -Fill in price_at_time if missing 
@@ -104,9 +104,9 @@ for row in rows:
     headline_time = row["date"]
     
     # Skip if headline is too recent (less than 1 day ago)
-    if headline_time > now - timedelta(days=1):
-        print(f"Skipping ID {row['id']} ({row['ticker']}) — too recent to fetch price_at_time")
-        continue
+    #if headline_time > now - timedelta(days=1):
+        #print(f"Skipping ID {row['id']} ({row['ticker']}) — too recent to fetch price_at_time")
+        #continue
 
     price = get_price_at(row["ticker"], headline_time)
 

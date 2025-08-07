@@ -11,11 +11,13 @@ cursor = conn.cursor(dictionary=True)
 cursor.execute("""
     SELECT id, price_at_time, price_7d_later
     FROM headlines
-    WHERE price_at_time IS NOT NULL
-      AND price_7d_later IS NOT NULL
-      AND price_change_pct_7d IS NULL
+    WHERE 
+        price_change_pct_7d IS NULL
+        AND price_7d_later IS NOT NULL
+        AND date >= CURDATE() - INTERVAL 10 DAY
 """)
 rows = cursor.fetchall()
+
 
 # Loop and calculate the 7-day % change
 for row in rows:

@@ -65,15 +65,6 @@ The end product is an interactive Streamlit dashboard that allows users to:
 
 ---
 
-## Learning Goals
-
-- Deepen understanding of Python through hands-on coding
-- Learn how to build and evolve a sentiment dictionary
-- Gain experience using data visualization and dashboard tools 
-- Improve GitHub workflow and version control discipline
-- Practice managing a multi-phase data project with weekly deliverables
-
----
 
 ## Learning Goals Achieved
 
@@ -97,11 +88,12 @@ Data Flow:
 1. Scraper (insert_finviz_headlines.py) → Fetches headlines + tickers
 
 2. Database Storage → MySQL table headlines
-3. Price Fetcher (update_price_xx.py) → Adds historical/future prices at set intervals
+   
+4. Price Fetcher (update_price_xx.py) → Adds historical/future prices at set intervals
 
-4. Sentiment Tagger (analyze_keywords.py) → Scores headlines using dictionary
+5. Sentiment Tagger (analyze_keywords.py) → Scores headlines using dictionary
 
-5. Dashboard (sentiment_dashboard.py) → Visualizes results interactively
+6. Dashboard (sentiment_dashboard.py) → Visualizes results interactively
 
 ## Tools & Technologies
 

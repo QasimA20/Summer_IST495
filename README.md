@@ -36,31 +36,32 @@ The end product is an interactive Streamlit dashboard that allows users to:
 
 2. **Develop and Maintain a Custom Dictionary**
    
-- Iteratively expanded to capture finance-specific language (e.g., “EPS beat,” “buyback,” “SEC probe”)
+   - Iteratively expanded to capture finance-specific language (e.g., “EPS beat,” “buyback,” “SEC probe”)
 
-- Includes both individual keywords and multi-word phrases
+   - Includes both individual keywords and multi-word phrases
 
--  Weighted scoring ensures high-impact terms influence sentiment appropriately
+   - Weighted scoring ensures high-impact terms influence sentiment appropriately
+     
 
-2. **Correlate Sentiment with Stock Price Movements**
+3. **Correlate Sentiment with Stock Price Movements**
 
-- Uses yfinance to retrieve stock prices at: time of headline, 1h, 4h, 24h, 4d, and 7d after
+   - Uses yfinance to retrieve stock prices at: time of headline, 1h, 4h, 24h, 4d, and 7d after
 
-- Calculates percentage changes to validate sentiment accuracy against real price movement
+   - Calculates percentage changes to validate sentiment accuracy against real price movement
 
 
 4. **Design a Visual Dashboard (Jupyter/Streamlit)**  
    Streamlit app with:
 
-- Ticker-specific sentiment & price trend charts
+   - Ticker-specific sentiment & price trend charts
 
-- Top keywords for all tickers or a specific stock
+   - Top keywords for all tickers or a specific stock
 
-- Market-wide “latest headlines” view with sentiment labels
+   - Market-wide “latest headlines” view with sentiment labels
 
-- Buy/Hold/Sell recommendations based on sentiment trends
+   - Buy/Hold/Sell recommendations based on sentiment trends
 
-- Supports date filtering, keyword exploration, and performance summaries
+   - Supports date filtering, keyword exploration, and performance summaries
 
 ---
 

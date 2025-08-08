@@ -11,15 +11,15 @@ Unlike black-box machine learning sentiment models, this approach is transparent
 
 The end product is an interactive Streamlit dashboard that allows users to:
 
-Explore recent headlines and their sentiment scores
+- Explore recent headlines and their sentiment scores
 
-Track sentiment trends for specific tickers over time
+- Track sentiment trends for specific tickers over time
 
-Compare sentiment with actual price changes at multiple intervals
+- Compare sentiment with actual price changes at multiple intervals
 
-Identify top positive/negative keywords driving market tone
+- Identify top positive/negative keywords driving market tone
 
-This work combines data engineering, sentiment analysis, and dashboard design into a complete, automated pipeline.
+- This work combines data engineering, sentiment analysis, and dashboard design into a complete, automated pipeline.
 
 ---
 

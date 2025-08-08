@@ -26,17 +26,41 @@ The end product is an interactive Streamlit dashboard that allows users to:
 ## Project Objectives
 
 1. **Build a Real-Time Sentiment Scoring Engine**
-   Python scripts ingest live stock headlines from Finviz
+   
+   - Python scripts ingest live stock headlines from Finviz
 
-   Headlines are cleaned, tokenized, and scored using a custom sentiment dictionary
+   - Headlines are cleaned, tokenized, and scored using a custom sentiment dictionary
 
-   Scores are scaled between -1 (strongly negative) and +1 (strongly positive)
+   - Scores are scaled between -1 (strongly negative) and +1 (strongly positive)
+     
 
-3. **Develop and Maintain a Custom Dictionary**  
-   Work iteratively to expand, tune, and refine a word-score dictionary based on real-world feedback and test results. Adjust for domain-specific terms.
+2. **Develop and Maintain a Custom Dictionary**
+   
+- Iteratively expanded to capture finance-specific language (e.g., “EPS beat,” “buyback,” “SEC probe”)
+
+- Includes both individual keywords and multi-word phrases
+
+-  Weighted scoring ensures high-impact terms influence sentiment appropriately
+
+2. **Correlate Sentiment with Stock Price Movements**
+
+- Uses yfinance to retrieve stock prices at: time of headline, 1h, 4h, 24h, 4d, and 7d after
+
+- Calculates percentage changes to validate sentiment accuracy against real price movement
+
 
 4. **Design a Visual Dashboard (Jupyter/Streamlit)**  
-   Build an interactive dashboard that allows sorting/filtering by score, date, or topic. Users should be able to explore sentiment patterns and outliers in headline tone over time.
+   Streamlit app with:
+
+- Ticker-specific sentiment & price trend charts
+
+- Top keywords for all tickers or a specific stock
+
+- Market-wide “latest headlines” view with sentiment labels
+
+- Buy/Hold/Sell recommendations based on sentiment trends
+
+- Supports date filtering, keyword exploration, and performance summaries
 
 ---
 
@@ -50,14 +74,47 @@ The end product is an interactive Streamlit dashboard that allows users to:
 
 ---
 
+## Learning Goals Achieved
+
+- Python & Data Processing – End-to-end ETL workflow from scraping to analysis
+
+- Sentiment Analysis – Designed a transparent, domain-specific scoring system
+
+- Database Integration – MySQL storage and querying for historical headlines
+
+- Data Visualization – Interactive financial dashboard using Streamlit and Altair
+
+- Version Control – Managed a multi-week development cycle using Git/GitHub
+
+- Project Management – Delivered incremental features with weekly progress milestones
+
+---
+
+## Technical Architecture
+Data Flow:
+
+1. Scraper (insert_finviz_headlines.py) → Fetches headlines + tickers
+
+2. Database Storage → MySQL table headlines
+3. Price Fetcher (update_price_xx.py) → Adds historical/future prices at set intervals
+
+4. Sentiment Tagger (analyze_keywords.py) → Scores headlines using dictionary
+
+5. Dashboard (sentiment_dashboard.py) → Visualizes results interactively
+
 ## Tools & Technologies
 
 | Tool | Purpose |
 |------|---------|
-| **Python** | Data processing, scoring logic |
+| **Python** | Data ingestion, sentiment scoring, price calculations |
+| **Pandas** | Text Parsing, cleaning, and transformation |
+| **BeautifulSoup** | Web scraping headlines from Finviz |
+| **yfinance** | Stock price retrieval |
+| **MySQL** | Persistent storage for headlines and price data |
+| **Streamlit** | Interactive dashboard front-end |
+| **Altair** | Data visualization for sentiment/price trends |
 | **Jupyter Notebook** | Exploration, testing, reporting |
 | **VS Code** | Development and file structure |
 | **GitHub** | Version control and weekly progress sharing |
-| **Pandas** | Text parsing, web scraping, data handling |
 
 ---

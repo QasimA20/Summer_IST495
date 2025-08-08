@@ -1,25 +1,41 @@
 # Summer_IST495
-Real-time dictionary-based sentiment analysis for news headlines (IST 495 Internship)
+Real-time dictionary-based sentiment analysis for stock news headlines (IST 495 Internship)
 
 **Intern: Qasim Ansari**
 
 ## Project Overview
 
-This internship project focuses on developing a real-time, dictionary-based sentiment analyzer specifically designed to evaluate news headlines. Unlike many sentiment tools that rely on pretrained models, this system emphasizes interpretability and adaptability, learning and updating in real-time through a custom-built sentiment dictionary.
+This internship project focuses on real-time sentiment analysis of stock market news headlines using a custom-built dictionary-based scoring system.
 
-The project will also include a visual dashboard that displays sentiment trends across time, categories (sports or economic news, not sure yet), and topics. This dashboard will help surface patterns in public tone as reflected in headline language.
+Unlike black-box machine learning sentiment models, this approach is transparent, explainable, and easily adaptable. The system ingests live headlines, assigns sentiment scores using a curated keyword dictionary, and correlates sentiment with actual stock price movements.
+
+The end product is an interactive Streamlit dashboard that allows users to:
+
+Explore recent headlines and their sentiment scores
+
+Track sentiment trends for specific tickers over time
+
+Compare sentiment with actual price changes at multiple intervals
+
+Identify top positive/negative keywords driving market tone
+
+This work combines data engineering, sentiment analysis, and dashboard design into a complete, automated pipeline.
 
 ---
 
 ## Project Objectives
 
-1. **Build a Real-Time Sentiment Scoring Engine**  
-   Create Python scripts that absorb and preprocess incoming news headlines, apply dictionary-based sentiment logic, and assign sentiment scores (either positive, negative, or neutral).
+1. **Build a Real-Time Sentiment Scoring Engine**
+   Python scripts ingest live stock headlines from Finviz
 
-2. **Develop and Maintain a Custom Dictionary**  
+   Headlines are cleaned, tokenized, and scored using a custom sentiment dictionary
+
+   Scores are scaled between -1 (strongly negative) and +1 (strongly positive)
+
+3. **Develop and Maintain a Custom Dictionary**  
    Work iteratively to expand, tune, and refine a word-score dictionary based on real-world feedback and test results. Adjust for domain-specific terms.
 
-3. **Design a Visual Dashboard (Jupyter/Streamlit)**  
+4. **Design a Visual Dashboard (Jupyter/Streamlit)**  
    Build an interactive dashboard that allows sorting/filtering by score, date, or topic. Users should be able to explore sentiment patterns and outliers in headline tone over time.
 
 ---

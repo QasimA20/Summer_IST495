@@ -13,17 +13,17 @@ ALTER TABLE headlines
   ADD COLUMN industry             VARCHAR(128) NOT NULL DEFAULT '',
 
   -- absolute prices
-  ADD COLUMN price_4h_later       DECIMAL(10,2) NOT NULL DEFAULT 0,
-  ADD COLUMN price_24h_later      DECIMAL(10,2) NOT NULL DEFAULT 0,
-  ADD COLUMN price_4d_later       DECIMAL(10,2) NOT NULL DEFAULT 0,
-  ADD COLUMN price_7d_later       DECIMAL(10,2) NOT NULL DEFAULT 0,
+  ADD COLUMN price_4h_later       DECIMAL(10,2) NULL DEFAULT NULL,
+  ADD COLUMN price_24h_later      DECIMAL(10,2) NULL DEFAULT NULL,
+  ADD COLUMN price_4d_later       DECIMAL(10,2) NULL DEFAULT NULL,
+  ADD COLUMN price_7d_later       DECIMAL(10,2) NULL DEFAULT NULL,
 
   -- percentage changes
-  ADD COLUMN price_change_pct_1h  DECIMAL(7,2)  NOT NULL DEFAULT 0,
-  ADD COLUMN price_change_pct_4h  DECIMAL(7,2)  NOT NULL DEFAULT 0,
-  ADD COLUMN price_change_pct_24h DECIMAL(7,2)  NOT NULL DEFAULT 0,
-  ADD COLUMN price_change_pct_4d  DECIMAL(7,2)  NOT NULL DEFAULT 0,
-  ADD COLUMN price_change_pct_7d  DECIMAL(7,2)  NOT NULL DEFAULT 0,
+  ADD COLUMN price_change_pct_1h  DECIMAL(8,4)  NULL DEFAULT NULL,
+  ADD COLUMN price_change_pct_4h  DECIMAL(8,4)  NULL DEFAULT NULL,
+  ADD COLUMN price_change_pct_24h DECIMAL(8,4)  NULL DEFAULT NULL,
+  ADD COLUMN price_change_pct_4d  DECIMAL(8,4)  NULL DEFAULT NULL,
+  ADD COLUMN price_change_pct_7d  DECIMAL(8,4)  NULL DEFAULT NULL,
 
   -- sentiment fields
   ADD COLUMN sentiment_score      DECIMAL(4,3)  NOT NULL DEFAULT 0,

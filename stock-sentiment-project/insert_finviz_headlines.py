@@ -21,7 +21,7 @@ if now.weekday() >= 5 or now.hour < 9 or now.hour >= 16:
     exit()
 
 
-# MySQL connection with my password
+# MySQL connection with password 
 conn = mysql.connector.connect(
     host="localhost",
     user="root",
@@ -31,6 +31,7 @@ conn = mysql.connector.connect(
 cursor = conn.cursor()
 
 
+#Update this path accordingly!! (data/finviz.csv)
 try:
     valid_tickers = set(pd.read_csv("/Users/qasim/finviz.csv")["Ticker"])
 
@@ -84,11 +85,11 @@ for row in rows:
     ticker_tag = row.select_one('a[href^="/quote.ashx?t="]') 
     headline_tag = row.find("a", class_="nn-tab-link")  # clickable news headline text
 
-    # Skip if some of the data is missing, I will work on finding a solution for this!
+    # Skip if some of the data is missing
     if not ticker_tag or not headline_tag:
         # Save skipped row to CSV
-        with open("skipped_headlines.csv", "a") as file:
-            file.write(row.get_text(strip=True) + "\n")
+        #with open("skipped_headlines.csv", "a") as file:
+            #file.write(row.get_text(strip=True) + "\n")
         skipped += 1
         continue
 
@@ -96,8 +97,8 @@ for row in rows:
 
     # Validate that the ticker is in our known list
     if ticker not in valid_tickers:
-        with open("skipped_headlines.csv", "a") as file:
-            file.write(row.get_text(strip=True) + "\n")
+        #with open("skipped_headlines.csv", "a") as file:
+            #file.write(row.get_text(strip=True) + "\n")
         skipped += 1
         continue
 
@@ -105,8 +106,8 @@ for row in rows:
 
     # Skip stock split headlines
     if "reverse split" in headline.lower() or "stock split" in headline.lower():
-        with open("skipped_headlines.csv", "a") as file:
-            file.write(f"SKIPPED SPLIT: {headline}\n")
+        #with open("skipped_headlines.csv", "a") as file:
+            #file.write(f"SKIPPED SPLIT: {headline}\n")
         skipped += 1
         continue
 

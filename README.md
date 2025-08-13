@@ -113,18 +113,46 @@ Data Flow:
 
 ---
 
-## Setup, Runbook, and TroubleShooting
-## (Detailed)
+## Setup, Runbook, and TroubleShooting (Detailed)
 
 *A complete, step‑by‑step guide to run this project on macOS or Windows, from fresh clone → dashboard demo*
 
-## Environment Setup
+**Environment Setup**
 
+## Quick Start (Data-first)
 
+> You need data before the dashboard is useful. Do these in order:
+> env → DB → insert → prices → sentiment → dashboard.
 
+### Windows (PowerShell)
 
+```powershell
+# 0) Create & activate venv, install deps
+python -m venv .venv
+.\.venv\Scripts\activate
+python -m pip install --no-cache-dir -r requirements.txt
 
+# 1) Apply DB schema (adds/normalizes columns)
+mysql -u root -p stock_news < add_missing_columns.sql
 
+# 2) Set DB env vars for this session
+$env:DB_HOST="localhost"
+$env:DB_USER="root"
+$env:DB_PASS="YourPasswordHere"
+$env:DB_NAME="stock_news"
+
+# 3) Insert headlines
+python -u "stock-sentiment-project\insert_finviz_headlines.py"
+
+# 4) Fill prices
+python -u "Price Scripts\unified_price_scripts.py"
+
+# 5) Tag sentiment
+python -u "Sentiment Scripts\sentiment_tagging.py"
+
+# 6) Launch dashboard
+streamlit run "Dashboard\sentiment_dashboard.py"
+# If streamlit not found: python -m streamlit run "Dashboard\sentiment_dashboard.py" 
 
 
 

@@ -92,7 +92,7 @@ Data Flow:
 2. Database Storage → MySQL table headlines
    
 4. Price Fetcher (unified_price_scripts.py) → Adds historical/future prices at set intervals
-   -   There is one unified price script that will run 250 lines at a time. The limit is to prevent rate-limiting.
+   - This is the only price script needed as it will run 250 lines at a time. The limit is to prevent rate-limiting.
 
 6. Sentiment Tagger (sentiment_score_intro.py) → Assigns scores to headlines using dictionary
 

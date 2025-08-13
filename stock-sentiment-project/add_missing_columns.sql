@@ -29,7 +29,7 @@ ALTER TABLE headlines
   ADD COLUMN sentiment_score      DECIMAL(4,3)  NOT NULL DEFAULT 0,
   ADD COLUMN matched_keywords     TEXT NULL,
   ADD COLUMN sentiment_label      VARCHAR(12)   NOT NULL DEFAULT '',
-  ADD COLUMN sentiment_confidence DECIMAL(4,3)  NOT NULL DEFAULT 0,
+  ADD COLUMN sentiment_confidence VARCHAR(32)  NOT NULL DEFAULT 0,
   ADD COLUMN confidence_score     DECIMAL(4,3)  NOT NULL DEFAULT 0,
 
   -- labels for dashboard

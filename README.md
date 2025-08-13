@@ -336,20 +336,22 @@ python "Sentiment Scripts/sentiment_tagging.py"
 ```
 
 
-**4) Price Change Percentages**
+**4) Price Change Percentages** (there are 5 of them, choose the one for that specific time value (1hr, 4h, 24h, 4d, or 7d))
 
 - Windows
 ```
+python -u "Percentage Change Scripts\update_price_change_pct_(??).py"
 
 ```
 
 - MacOS
 ```
+python "Percentage Change Scripts\update_price_change_pct_(??).py"
 
 ```
 
 
-**4) Dashboard (Streamlit)**
+**5) Dashboard (Streamlit)**
 
 - Windows
 ```

@@ -91,11 +91,14 @@ Data Flow:
 
 2. Database Storage → MySQL table headlines
    
-4. Price Fetcher (update_price_xx.py) → Adds historical/future prices at set intervals
+4. Price Fetcher (unified_price_scripts.py) → Adds historical/future prices at set intervals
+   -   There is one unified price script that will run 250 lines at a time. The limit is to prevent rate-limiting.
 
-5. Sentiment Tagger (analyze_keywords.py) → Scores headlines using dictionary
+6. Sentiment Tagger (sentiment_score_intro.py) → Assigns scores to headlines using dictionary
 
-6. Dashboard (sentiment_dashboard.py) → Visualizes results interactively
+7. Percentage Change Scripts → Calcualtes % changes for prices over the week (There are 5 of these scripts)
+
+8. Dashboard (sentiment_dashboard.py) → Visualizes results interactively
    
 
 ## Tools & Technologies
@@ -127,7 +130,7 @@ Data Flow:
 - MySQL Server (local OK)
 
 - pip and python -m venv
-
+  
 ---
 
 **Environment Setup**
@@ -147,47 +150,53 @@ python -V   # should show 3.9.6
 *Windows (PowerShell)*
 
 ```powershell
-# 0) Create & activate venv, install deps
-python -m venv .venv
+# 0) Create & activate venv, install deps (Python 3.9.6)
+py -3.9 -m venv .venv
 .\.venv\Scripts\activate
+python -V  # should be 3.9.x
 python -m pip install --no-cache-dir -r requirements.txt
 
-# 1) Apply DB schema (adds/normalizes columns)
-First create the table(s) using **stock_sentiment_schema.sql**, then normalize columns with **add_missing_columns.sql**.
+# 1) Ensure MySQL is running
+net start MySQL80
+
+# 2) Apply schema (create tables, then normalize columns)
+mysql -u root -p < stock_sentiment_schema.sql
 mysql -u root -p stock_news < add_missing_columns.sql
 
-
-# 2) Set DB env vars for this session (# Replace <YourPasswordHere> with YOUR MySQL password)
+# 3) Set DB env vars (replace with YOUR password!)
 $env:DB_HOST="localhost"
 $env:DB_USER="root"
-$env:DB_PASS="YourPasswordHere!"
+$env:DB_PASS="<YOUR_PASSWORD_HERE>"
 $env:DB_NAME="stock_news"
 
-# 3) Insert headlines **(best during market hours 9:30–16:00 ET)**
+# 4) Insert headlines (best during market hours 9:30–16:00 ET)
 python -u "stock-sentiment-project\insert_finviz_headlines.py"
 
-# 4) Fill prices
+# 5) Fill prices
 python -u "Price Scripts\unified_price_scripts.py"
 
-# 5) Compute percentage changes (required by dashboard)
-python -u "Price Scripts/<your_pct_change_script.py>"
+# 6) Compute percentage changes (required by dashboard)
+python -u "Percentage Change Scripts\update_price_change_pct_ALL.py"   # <-- use your real file per time slot
 
-# 6) Tag sentiment
-python -u "Sentiment Scripts\sentiment_score_intro.py"
+# 7) Tag sentiment
+python -u "Sentiment Scripts\sentiment_score_intro.py"                   
 
-# 7) Launch dashboard
-streamlit run "dashboard\sentiment_dashboard.py"
+# 8) Launch dashboard (after 1–2 trading days of data)
+streamlit run "Dashboard\sentiment_dashboard.py"
 # If streamlit not found: python -m streamlit run "dashboard\sentiment_dashboard.py"
+# If 8501 is busy: streamlit run "Dashboard\sentiment_dashboard.py" --server.port 8502
 ```
 
 *MacOS*
 ```
 # 0) Create & activate venv, install deps
-python3 -m venv .venv
+python3.9 -m venv .venv
 source .venv/bin/activate
+python -V  # 3.9.x
 python -m pip install --no-cache-dir -r requirements.txt
 
 # 1) Apply DB schema (adds/normalizes columns)
+mysql -u root -p < stock_sentiment_schema.sql
 mysql -u root -p stock_news < add_missing_columns.sql
 
 # 2) Set DB env vars for this session (# Replace <YOUR_PASSWORD_HERE> with YOUR MySQL password)
@@ -203,10 +212,11 @@ python "Price Scripts/unified_price_scripts.py"
 python "Price Scripts/<your_pct_change_script.py>"
 
 # 6) Tag sentiment
-python "Sentiment Scripts/sentiment_tagging.py"
+python "Sentiment Scripts/sentiment_score_intro.py"
 
 # 7) Launch dashboard (after ~1–2 trading days of data)
 python -m streamlit run Dashboard/sentiment_dashboard.py
+# If 8501 is busy: python -m streamlit run Dashboard/sentiment_dashboard.py --server.port 8502
 ```
 
 *Configuration: Database Credentials (do this first)**
@@ -359,12 +369,12 @@ python "Percentage Change Scripts\update_price_change_pct_(??).py"
 ```
 streamlit run "Dashboard\sentiment_dashboard.py"
 # If streamlit not found:
-python -m streamlit run "Dashboard\sentiment_dashboard.py"
+python -m streamlit run "dashboard\sentiment_dashboard.py"
 ```
 
 - MacOS
 ```
-python -m streamlit run Dashboard/sentiment_dashboard.py
+python -m streamlit run dashboard/sentiment_dashboard.py
 ```
 
 
@@ -426,9 +436,6 @@ Ensure Streamlit is using the same interpreter shown above.
 ```
 echo $env:DB_PASS   # PowerShell
 ```
-
-
-
 ---
 
 ## Data Dictionary (key fields)

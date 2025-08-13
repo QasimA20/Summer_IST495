@@ -117,6 +117,17 @@ Data Flow:
 
 *A complete, step‑by‑step guide to run this project on macOS or Windows, from fresh clone → dashboard demo*
 
+
+**Prerequisites**
+
+- Python 3.11 (recommended) / 64‑bit on Windows
+
+- MySQL Server (local OK)
+
+- pip and python -m venv
+
+
+
 **Environment Setup**
 
 ## Quick Start (Data-first)
@@ -155,10 +166,182 @@ python -u "Sentiment Scripts\sentiment_score_intro.py"
 # 6) Launch dashboard
 streamlit run "dashboard\sentiment_dashboard.py"
 # If streamlit not found: python -m streamlit run "dashboard\sentiment_dashboard.py"
+```
+
+**Database Setup**
+1) Create DB & user (example)
+```
+CREATE DATABASE IF NOT EXISTS stock_news;
+-- CREATE USER 'root'@'localhost' IDENTIFIED BY 'YourPasswordHere';
+-- GRANT ALL PRIVILEGES ON stock_news.* TO 'root'@'localhost';
+```
+
+2) Apply schema/migrations
+
+Use ```add_missing_columns.sql``` to add missing columns and normalize NULL defaults.
+
+Workbench: Open → run (⚡️)
+```CLI: mysql -u root -p stock_news < add_missing_columns.sql```
+
+3) Environment variables
+Windows
+```
+$env:DB_HOST="localhost"
+$env:DB_USER="root"
+$env:DB_PASS="YourPasswordHere"
+$env:DB_NAME="stock_news"
+```
+
+MacOS
+```
+export DB_HOST="localhost"
+export DB_USER="root"
+export DB_PASS="YourPasswordHere"
+export DB_NAME="stock_news"
+```
 
 
+**CSV Path Note (Finviz)**
+
+Mac + cron: absolute path like /Users/qasim/finviz.csv for reliability when run by cron.
+
+Windows/manual: use data/finviz.csv inside the repo.
+
+
+
+
+
+## Runbook — Scripts
+**1) Insert Headlines**
+
+Windows
+```
+python -u "stock-sentiment-project\insert_finviz_headlines.py"
+```
+
+MacOS
+```
+python stock-sentiment-project/insert_finviz_headlines.py
+```
+
+
+**2) Unified Price Update**
+
+Windows
+```
+python -u "Price Scripts\unified_price_scripts.py"
+```
+
+MacOS
+```
+python "Price Scripts/unified_price_scripts.py"
+```
+
+
+**3) Sentiment Tagging**
+
+Windows
+```
+python -u "Sentiment Scripts\sentiment_tagging.py"
+```
+
+MacOS
+```
+python "Sentiment Scripts/sentiment_tagging.py"
+```
+
+
+**4) Price Change Percentages**
+
+Windows
+```
 
 ```
+
+MacOS
+```
+
+```
+
+
+**4) Dashboard (Streamlit)**
+
+Windows
+```
+streamlit run "Dashboard\sentiment_dashboard.py"
+# If streamlit not found:
+python -m streamlit run "Dashboard\sentiment_dashboard.py"
+```
+
+MacOS
+```
+python -m streamlit run Dashboard/sentiment_dashboard.py
+```
+
+
+
+
+
+**1) Insert Headlines**
+
+Windows
+```
+python -u "stock-sentiment-project\insert_finviz_headlines.py"
+```
+
+MacOS
+```
+python stock-sentiment-project/insert_finviz_headlines.py
+```
+
+
+
+
+
+## Scheduling (optional)
+
+macOS (cron)
+```
+*/30 9-16 * * 1-5 /usr/bin/env bash -lc 'cd /path/to/Summer_IST495 && source .venv/bin/activate && python stock-sentiment-project/insert_finviz_headlines.py >> ~/Desktop/cron_output.log 2>&1'
+```
+
+
+
+
+
+
+
+Database Schema (headlines)
+
+Key fields used by scripts & dashboard:
+
+ticker (VARCHAR)
+
+headline (TEXT)
+
+date (DATETIME)
+
+price_at_time (DECIMAL)
+
+price_1h_later, price_4h_later, price_24h_later, price_4d_later, price_7d_later (DECIMAL, NULL by default)
+
+price_change_pct_1h, price_change_pct_4h, price_change_pct_24h, price_change_pct_4d, price_change_pct_7d (DECIMAL, NULL by default)
+
+sentiment_score (DECIMAL in [-1,1], NULL by default)
+
+matched_keywords (TEXT, NULL by default)
+
+sentiment_confidence (VARCHAR(32), e.g., low|medium|high)
+
+confidence_score (DECIMAL(4,3), numeric 0–1)
+
+labels, price_label_* (VARCHAR)
+
+Migrations: add_missing_columns.sql both ADD COLUMN IF NOT EXISTS and MODIFY existing columns to NULL DEFAULT NULL. sentiment_confidence is VARCHAR(32).
+
+
+
+
 
 ## TroubleShooting
 
@@ -169,18 +352,15 @@ streamlit run "dashboard\sentiment_dashboard.py"
 python -m pip install --no-cache-dir rpds-py==0.18.1
 ```
 
-```
 - No module named pyarrow.lib
-```
 ```
 .\.venv\Scripts\activate
 python -m pip uninstall -y pyarrow
 python -m pip install --no-cache-dir pyarrow==14.0.2
 ```
 
-```
+
 - NumPy ABI error (module compiled using NumPy 1.x cannot run in NumPy 2.0.x)
-```
 ```
 .\.venv\Scripts\activate
 python -m pip uninstall -y numpy
@@ -188,10 +368,24 @@ python -m pip install "numpy==1.26.4"
 python -m pip install --force-reinstall --no-cache-dir pandas==2.2.2 pyarrow==14.0.2
 ```
 
+- Windows _cffi_backend error (curl_cffi/yfinance)
+```
+.\.venv\Scripts\activate
+python -m pip uninstall -y cffi
+python -m pip install cffi==1.16.0
+python -m pip install --force-reinstall curl_cffi==0.13.0
+```
+
+- Wrong Python/env (packages “installed” but still missing)
+```
+.\.venv\Scripts\activate
+python -c "import sys; print(sys.executable)"
+where python
+where pip
+```
+Ensure Streamlit is using the same interpreter shown above.
 
 
-
-NumPy ABI error (module compiled using NumPy 1.x cannot run in NumPy 2.0.x)
 
 
 ## Data Dictionary (key fields)

@@ -2,6 +2,7 @@
 Real-time dictionary-based sentiment analysis for stock news headlines (IST 495 Internship)
 
 **Intern: Qasim Ansari**
+**Email: qia5020@psu.edu**
 
 ## Project Overview
 
@@ -260,6 +261,7 @@ SELECT COUNT(*) AS rows_in_headlines FROM headlines;
 
 
 3) Environment variables
+   
 *Windows*
 ```
 $env:DB_HOST="localhost"

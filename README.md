@@ -94,6 +94,7 @@ Data Flow:
 5. Sentiment Tagger (analyze_keywords.py) → Scores headlines using dictionary
 
 6. Dashboard (sentiment_dashboard.py) → Visualizes results interactively
+   
 
 ## Tools & Technologies
 
@@ -111,3 +112,19 @@ Data Flow:
 | **GitHub** | Version control and weekly progress sharing |
 
 ---
+
+## Setup, Runbook, and TroubleShooting
+## (Detailed)
+
+*A complete, step‑by‑step guide to run this project on macOS or Windows, from fresh clone → dashboard demo*
+
+## Environment Setup
+
+
+
+
+
+
+
+
+

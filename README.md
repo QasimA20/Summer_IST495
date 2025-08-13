@@ -361,7 +361,7 @@ python -m streamlit run dashboard/sentiment_dashboard.py
 
 ---
 
-## Scheduling (optional)
+## Automated Scheduling (optional)
 
 macOS (cron)
 ```

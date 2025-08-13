@@ -143,9 +143,9 @@ python -m venv .venv
 python -m pip install --no-cache-dir -r requirements.txt
 
 # 1) Apply DB schema (adds/normalizes columns)
-...Need to create table
+First create the table(s) using **stock_sentiment_schema.sql**, then normalize columns with **add_missing_columns.sql**.
 mysql -u root -p stock_news < add_missing_columns.sql
-(You can also open this add_missing_columns.sql file in MySQL and load it there!)
+
 
 # 2) Set DB env vars for this session
 $env:DB_HOST="localhost"
@@ -199,6 +199,27 @@ python "Sentiment Scripts/sentiment_tagging.py"
 python -m streamlit run Dashboard/sentiment_dashboard.py
 ```
 
+*Configuration: Database Credentials (do this first)**
+Don’t use someone else’s password. Every script should read credentials from environment variables so each user supplies their own. Pick one method:
+
+Option A — Set environment variables (recommended)
+*Windows (PowerShell)*
+```
+$env:DB_HOST="localhost"
+$env:DB_USER="root"
+$env:DB_PASS="<YOUR_PASSWORD_HERE>"
+$env:DB_NAME="stock_news"
+```
+
+*MacOS/Linux*
+```
+export DB_HOST="localhost"
+export DB_USER="root"
+export DB_PASS="<YOUR_PASSWORD_HERE>"
+export DB_NAME="stock_news"
+```
+These apply only to the current terminal session. Open a new terminal → set them again 
+
 ---
 
 **Database Setup**
@@ -211,10 +232,23 @@ CREATE DATABASE IF NOT EXISTS stock_news;
 
 2) Apply schema/migrations
 
-Use ```add_missing_columns.sql``` to add missing columns and normalize NULL defaults.
+**MySQL Workbench (GUI)**
+- Open **stock_sentiment_schema.sql** → make sure the default schema is **stock_news** (double-click it in the left panel so it’s bold) → **Run** (⚡️).
+  - The file includes `USE stock_news;` so queries target the correct database. If your DB name is different, edit that line.
+- Open **add_missing_columns.sql** → **Run** (⚡️).  
+  This adds any missing columns and switches defaults to `NULL` without touching existing data.
 
+**CLI (either OS)**
+```bash
+# Create tables and point to the right DB
+mysql -u root -p < stock_sentiment_schema.sql
+
+# Then add/normalize any missing columns
+mysql -u root -p stock_news < add_missing_columns.sql
+
+Use ```add_missing_columns.sql``` to add missing columns and normalize NULL defaults.
 Workbench: Open → run (⚡️)
-```CLI: mysql -u root -p stock_news < add_missing_columns.sql```
+```CLI: mysql -u root -p stock_news < add_missing_columns.sql '''
 
 3) Environment variables
 Windows

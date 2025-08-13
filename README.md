@@ -2,6 +2,7 @@
 Real-time dictionary-based sentiment analysis for stock news headlines (IST 495 Internship)
 
 **Intern: Qasim Ansari**
+
 **Email: qia5020@psu.edu**
 
 ## Project Overview

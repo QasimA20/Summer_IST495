@@ -133,12 +133,14 @@ python -m venv .venv
 python -m pip install --no-cache-dir -r requirements.txt
 
 # 1) Apply DB schema (adds/normalizes columns)
+...Need to create table
 mysql -u root -p stock_news < add_missing_columns.sql
+(You can also open this add_missing_columns.sql file in MySQL and load it there!)
 
 # 2) Set DB env vars for this session
 $env:DB_HOST="localhost"
 $env:DB_USER="root"
-$env:DB_PASS="YourPasswordHere"
+$env:DB_PASS="YourPasswordHere!"
 $env:DB_NAME="stock_news"
 
 # 3) Insert headlines
@@ -148,11 +150,74 @@ python -u "stock-sentiment-project\insert_finviz_headlines.py"
 python -u "Price Scripts\unified_price_scripts.py"
 
 # 5) Tag sentiment
-python -u "Sentiment Scripts\sentiment_tagging.py"
+python -u "Sentiment Scripts\sentiment_score_intro.py"
 
 # 6) Launch dashboard
-streamlit run "Dashboard\sentiment_dashboard.py"
-# If streamlit not found: python -m streamlit run "Dashboard\sentiment_dashboard.py" 
+streamlit run "dashboard\sentiment_dashboard.py"
+# If streamlit not found: python -m streamlit run "dashboard\sentiment_dashboard.py"
+
+
+
+```
+
+## TroubleShooting
+
+```
+- No module named rpds.rpds
+```
+```
+.\.venv\Scripts\activate
+python -m pip install --no-cache-dir rpds-py==0.18.1
+```
+
+```
+- No module named pyarrow.lib
+```
+```
+.\.venv\Scripts\activate
+python -m pip uninstall -y pyarrow
+python -m pip install --no-cache-dir pyarrow==14.0.2
+```
+
+```
+- NumPy ABI error (module compiled using NumPy 1.x cannot run in NumPy 2.0.x)
+```
+```
+.\.venv\Scripts\activate
+python -m pip uninstall -y numpy
+python -m pip install "numpy==1.26.4"
+python -m pip install --force-reinstall --no-cache-dir pandas==2.2.2 pyarrow==14.0.2
+```
+
+
+
+
+NumPy ABI error (module compiled using NumPy 1.x cannot run in NumPy 2.0.x)
+
+
+## Data Dictionary (key fields)
+
+- id (PK, INT)
+- ticker — Stock ticker symbol
+- headline — News headline text
+- date — Headline timestamp (UTC/local normalized by script)
+- price_at_time — Price at headline timestamp
+- price_*_later — Absolute prices at 1h, 4h, 24h, 4d, 7d after
+- price_change_pct_* — Percentage changes vs price_at_time
+- sentiment_score — average dictionary score in [-1, 1]
+- matched_keywords — JSON list of matched terms/phrases
+- sentiment_confidence — label: low|medium|high
+- confidence_score — numeric confidence 0–1
+  
+
+## Known Limitations
+
+- Only last 7 business days are emphasized in the dashboard by default.
+- Prices around weekends/holidays may be deferred; scripts include fallback logic but verify edge cases.
+- Only run headlines script during market hours.
+- Finviz can throttle or change markup; scraper may require maintenance.
+
+
 
 
 

@@ -232,6 +232,8 @@ CREATE DATABASE IF NOT EXISTS stock_news;
 
 2) Apply schema/migrations
 
+Make sure to create the table(s) using **stock_sentiment_schema.sql**, then normalize columns with **add_missing_columns.sql**.
+
 **MySQL Workbench (GUI)**
 - Open **stock_sentiment_schema.sql** → make sure the default schema is **stock_news** (double-click it in the left panel so it’s bold) → **Run** (⚡️).
   - The file includes `USE stock_news;` so queries target the correct database. If your DB name is different, edit that line.
@@ -245,10 +247,17 @@ mysql -u root -p < stock_sentiment_schema.sql
 
 # Then add/normalize any missing columns
 mysql -u root -p stock_news < add_missing_columns.sql
-
-Use ```add_missing_columns.sql``` to add missing columns and normalize NULL defaults.
 Workbench: Open → run (⚡️)
-```CLI: mysql -u root -p stock_news < add_missing_columns.sql '''
+```
+
+*Verify*
+```
+USE stock_news;
+SHOW TABLES;
+DESCRIBE headlines;
+SELECT COUNT(*) AS rows_in_headlines FROM headlines;
+```
+
 
 3) Environment variables
 Windows

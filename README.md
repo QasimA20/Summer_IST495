@@ -162,9 +162,8 @@ streamlit run "dashboard\sentiment_dashboard.py"
 
 ## TroubleShooting
 
-```
+
 - No module named rpds.rpds
-```
 ```
 .\.venv\Scripts\activate
 python -m pip install --no-cache-dir rpds-py==0.18.1

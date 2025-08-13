@@ -130,12 +130,8 @@ Data Flow:
 
 **Environment Setup**
 
-## Quick Start (Data-first)
-
 > You need data before the dashboard is useful. Do these in order:
 > env → DB → insert → prices → sentiment → dashboard.
-
----
 
 
 *Windows (PowerShell)*
@@ -249,12 +245,12 @@ Windows/manual: use data/finviz.csv inside the repo.
 ## Runbook — Scripts
 **1) Insert Headlines**
 
-Windows
+- Windows
 ```
 python -u "stock-sentiment-project\insert_finviz_headlines.py"
 ```
 
-MacOS
+- MacOS
 ```
 python stock-sentiment-project/insert_finviz_headlines.py
 ```
@@ -262,12 +258,12 @@ python stock-sentiment-project/insert_finviz_headlines.py
 
 **2) Unified Price Update**
 
-Windows
+- Windows
 ```
 python -u "Price Scripts\unified_price_scripts.py"
 ```
 
-MacOS
+- MacOS
 ```
 python "Price Scripts/unified_price_scripts.py"
 ```
@@ -275,12 +271,12 @@ python "Price Scripts/unified_price_scripts.py"
 
 **3) Sentiment Tagging**
 
-Windows
+- Windows
 ```
 python -u "Sentiment Scripts\sentiment_tagging.py"
 ```
 
-MacOS
+- MacOS
 ```
 python "Sentiment Scripts/sentiment_tagging.py"
 ```
@@ -288,12 +284,12 @@ python "Sentiment Scripts/sentiment_tagging.py"
 
 **4) Price Change Percentages**
 
-Windows
+- Windows
 ```
 
 ```
 
-MacOS
+- MacOS
 ```
 
 ```
@@ -301,33 +297,18 @@ MacOS
 
 **4) Dashboard (Streamlit)**
 
-Windows
+- Windows
 ```
 streamlit run "Dashboard\sentiment_dashboard.py"
 # If streamlit not found:
 python -m streamlit run "Dashboard\sentiment_dashboard.py"
 ```
 
-MacOS
+- MacOS
 ```
 python -m streamlit run Dashboard/sentiment_dashboard.py
 ```
 
-
-
-
-
-**1) Insert Headlines**
-
-Windows
-```
-python -u "stock-sentiment-project\insert_finviz_headlines.py"
-```
-
-MacOS
-```
-python stock-sentiment-project/insert_finviz_headlines.py
-```
 
 ---
 
@@ -340,35 +321,6 @@ macOS (cron)
 
 ---
 
-## Database Schema (headlines)
-
-Key fields used by scripts & dashboard:
-
-- ticker (VARCHAR)
-
-- headline (TEXT)
-
-- date (DATETIME)
-
-- price_at_time (DECIMAL)
-
-- price_1h_later, price_4h_later, price_24h_later, price_4d_later, price_7d_later (DECIMAL, NULL by default)
-
-- price_change_pct_1h, price_change_pct_4h, price_change_pct_24h, price_change_pct_4d, price_change_pct_7d (DECIMAL, NULL by default)
-
-- sentiment_score (DECIMAL in [-1,1], NULL by default)
-
-- matched_keywords (TEXT, NULL by default)
-
-- sentiment_confidence (VARCHAR(32), e.g., low|medium|high)
-
-- confidence_score (DECIMAL(4,3), numeric 0–1)
-
-- labels, price_label_* (VARCHAR)
-
-- Migrations: add_missing_columns.sql both ADD COLUMN IF NOT EXISTS and MODIFY existing columns to NULL DEFAULT NULL. sentiment_confidence is VARCHAR(32).
-
----
 
 ## TroubleShooting
 
@@ -430,6 +382,37 @@ Ensure Streamlit is using the same interpreter shown above.
 - confidence_score — numeric confidence 0–1
 
 ---
+
+## Database Schema (headlines)
+
+Key fields used by scripts & dashboard:
+
+- ticker (VARCHAR)
+
+- headline (TEXT)
+
+- date (DATETIME)
+
+- price_at_time (DECIMAL)
+
+- price_1h_later, price_4h_later, price_24h_later, price_4d_later, price_7d_later (DECIMAL, NULL by default)
+
+- price_change_pct_1h, price_change_pct_4h, price_change_pct_24h, price_change_pct_4d, price_change_pct_7d (DECIMAL, NULL by default)
+
+- sentiment_score (DECIMAL in [-1,1], NULL by default)
+
+- matched_keywords (TEXT, NULL by default)
+
+- sentiment_confidence (VARCHAR(32), e.g., low|medium|high)
+
+- confidence_score (DECIMAL(4,3), numeric 0–1)
+
+- labels, price_label_* (VARCHAR)
+
+- Migrations: add_missing_columns.sql both ADD COLUMN IF NOT EXISTS and MODIFY existing columns to NULL DEFAULT NULL. sentiment_confidence is VARCHAR(32).
+
+---
+
 
 ## Known Limitations
 

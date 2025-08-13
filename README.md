@@ -52,7 +52,7 @@ The end product is an interactive Streamlit dashboard that allows users to:
    - Calculates percentage changes to validate sentiment accuracy against real price movement
 
 
-4. **Design a Visual Dashboard (Jupyter/Streamlit)**  
+4. **Design a Visual Dashboard**  
    Streamlit app with:
 
    - Ticker-specific sentiment & price trend charts
@@ -222,7 +222,7 @@ python -m streamlit run dashboard/sentiment_dashboard.py
 *Configuration: Database Credentials (do this first)**
 Don’t use someone else’s password. Every script should read credentials from environment variables so each user supplies their own.
 
-Use your own MySQL password. In all examples, replace <YOUR_PASSWORD_HERE> with your local MySQL password!
+Again, use your own MySQL password. In all scripts, replace <YOUR_PASSWORD_HERE> with your local MySQL password!
 
 Set environment variables (recommended)
 *Windows (PowerShell)*
@@ -472,6 +472,21 @@ Key fields used by scripts & dashboard:
 - Prices around weekends/holidays may be deferred; scripts include fallback logic but verify edge cases.
 - Only run headlines script during market hours.
 - Finviz can throttle or change markup; scraper may require maintenance.
+
+## Every Script that will be used
+
+- insert_finviz_headlines.py
+- unified_price_scripts.py
+- sentiment_score_intro.py
+- update_sector_industry_metadata.py
+- update_price_change_pct_1hr.py
+- update_price_change_pct_4h.py
+- update_price_change_pct_24h.py
+- update_price_change_pct_4d.py
+- update_price_change_pct_7d.py
+- stock_sentiment_schema.sql
+- add_missing_columns.sql
+- sentiment_dashboard.py
 
 
 

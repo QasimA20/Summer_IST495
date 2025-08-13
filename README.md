@@ -157,7 +157,7 @@ First create the table(s) using **stock_sentiment_schema.sql**, then normalize c
 mysql -u root -p stock_news < add_missing_columns.sql
 
 
-# 2) Set DB env vars for this session
+# 2) Set DB env vars for this session (# Replace <YourPasswordHere> with YOUR MySQL password)
 $env:DB_HOST="localhost"
 $env:DB_USER="root"
 $env:DB_PASS="YourPasswordHere!"
@@ -190,7 +190,7 @@ python -m pip install --no-cache-dir -r requirements.txt
 # 1) Apply DB schema (adds/normalizes columns)
 mysql -u root -p stock_news < add_missing_columns.sql
 
-# 2) Set DB env vars for this session
+# 2) Set DB env vars for this session (# Replace <YOUR_PASSWORD_HERE> with YOUR MySQL password)
 export DB_HOST="localhost"; export DB_USER="root"; export DB_PASS="<YOUR_PASSWORD_HERE>"; export DB_NAME="stock_news"
 
 # 3) Insert headlines  (best during market hours 9:30–16:00 ET)
@@ -210,7 +210,9 @@ python -m streamlit run Dashboard/sentiment_dashboard.py
 ```
 
 *Configuration: Database Credentials (do this first)**
-Don’t use someone else’s password. Every script should read credentials from environment variables so each user supplies their own. Pick one method:
+Don’t use someone else’s password. Every script should read credentials from environment variables so each user supplies their own.
+
+Use your own MySQL password. In all examples, replace <YOUR_PASSWORD_HERE> with your local MySQL password!
 
 Set environment variables (recommended)
 *Windows (PowerShell)*
@@ -419,6 +421,12 @@ where python
 where pip
 ```
 Ensure Streamlit is using the same interpreter shown above.
+
+- If connection fails, verify the password is set:
+```
+echo $env:DB_PASS   # PowerShell
+```
+
 
 
 ---

@@ -122,7 +122,7 @@ Data Flow:
 
 **Prerequisites**
 
-- Python 3.11 (recommended) / 64‑bit on Windows
+- Python Version 3.9.6 / 64‑bit on Windows
 
 - MySQL Server (local OK)
 
@@ -134,6 +134,14 @@ Data Flow:
 
 > You need data before the dashboard is useful. Do these in order:
 > env → DB → insert → prices → sentiment → dashboard.
+
+
+# Create the venv explicitly with 3.9
+```
+py -3.9 -m venv .venv
+.\.venv\Scripts\activate
+python -V   # should show 3.9.6
+```
 
 
 *Windows (PowerShell)*

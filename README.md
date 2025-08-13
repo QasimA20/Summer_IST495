@@ -126,7 +126,7 @@ Data Flow:
 
 - pip and python -m venv
 
-
+---
 
 **Environment Setup**
 
@@ -135,7 +135,10 @@ Data Flow:
 > You need data before the dashboard is useful. Do these in order:
 > env → DB → insert → prices → sentiment → dashboard.
 
-### Windows (PowerShell)
+---
+
+
+*Windows (PowerShell)*
 
 ```powershell
 # 0) Create & activate venv, install deps
@@ -154,19 +157,53 @@ $env:DB_USER="root"
 $env:DB_PASS="YourPasswordHere!"
 $env:DB_NAME="stock_news"
 
-# 3) Insert headlines
+# 3) Insert headlines **(best during market hours 9:30–16:00 ET)**
 python -u "stock-sentiment-project\insert_finviz_headlines.py"
 
 # 4) Fill prices
 python -u "Price Scripts\unified_price_scripts.py"
 
-# 5) Tag sentiment
+# 5) Compute percentage changes (required by dashboard)
+python -u "Price Scripts/<your_pct_change_script.py>"
+
+# 6) Tag sentiment
 python -u "Sentiment Scripts\sentiment_score_intro.py"
 
-# 6) Launch dashboard
+# 7) Launch dashboard
 streamlit run "dashboard\sentiment_dashboard.py"
 # If streamlit not found: python -m streamlit run "dashboard\sentiment_dashboard.py"
 ```
+
+*MacOS*
+```
+# 0) Create & activate venv, install deps
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install --no-cache-dir -r requirements.txt
+
+# 1) Apply DB schema (adds/normalizes columns)
+mysql -u root -p stock_news < add_missing_columns.sql
+
+# 2) Set DB env vars for this session
+export DB_HOST="localhost"; export DB_USER="root"; export DB_PASS="<YOUR_PASSWORD_HERE>"; export DB_NAME="stock_news"
+
+# 3) Insert headlines  (best during market hours 9:30–16:00 ET)
+python stock-sentiment-project/insert_finviz_headlines.py
+
+# 4) Fill absolute prices
+python "Price Scripts/unified_price_scripts.py"
+
+# 5) Compute percentage changes (required by dashboard)
+python "Price Scripts/<your_pct_change_script.py>"
+
+# 6) Tag sentiment
+python "Sentiment Scripts/sentiment_tagging.py"
+
+# 7) Launch dashboard (after ~1–2 trading days of data)
+python -m streamlit run Dashboard/sentiment_dashboard.py
+```
+
+---
 
 **Database Setup**
 1) Create DB & user (example)
@@ -199,7 +236,7 @@ export DB_USER="root"
 export DB_PASS="YourPasswordHere"
 export DB_NAME="stock_news"
 ```
-
+---
 
 **CSV Path Note (Finviz)**
 
@@ -207,9 +244,7 @@ Mac + cron: absolute path like /Users/qasim/finviz.csv for reliability when run 
 
 Windows/manual: use data/finviz.csv inside the repo.
 
-
-
-
+---
 
 ## Runbook — Scripts
 **1) Insert Headlines**
@@ -294,9 +329,7 @@ MacOS
 python stock-sentiment-project/insert_finviz_headlines.py
 ```
 
-
-
-
+---
 
 ## Scheduling (optional)
 
@@ -305,43 +338,37 @@ macOS (cron)
 */30 9-16 * * 1-5 /usr/bin/env bash -lc 'cd /path/to/Summer_IST495 && source .venv/bin/activate && python stock-sentiment-project/insert_finviz_headlines.py >> ~/Desktop/cron_output.log 2>&1'
 ```
 
+---
 
-
-
-
-
-
-Database Schema (headlines)
+## Database Schema (headlines)
 
 Key fields used by scripts & dashboard:
 
-ticker (VARCHAR)
+- ticker (VARCHAR)
 
-headline (TEXT)
+- headline (TEXT)
 
-date (DATETIME)
+- date (DATETIME)
 
-price_at_time (DECIMAL)
+- price_at_time (DECIMAL)
 
-price_1h_later, price_4h_later, price_24h_later, price_4d_later, price_7d_later (DECIMAL, NULL by default)
+- price_1h_later, price_4h_later, price_24h_later, price_4d_later, price_7d_later (DECIMAL, NULL by default)
 
-price_change_pct_1h, price_change_pct_4h, price_change_pct_24h, price_change_pct_4d, price_change_pct_7d (DECIMAL, NULL by default)
+- price_change_pct_1h, price_change_pct_4h, price_change_pct_24h, price_change_pct_4d, price_change_pct_7d (DECIMAL, NULL by default)
 
-sentiment_score (DECIMAL in [-1,1], NULL by default)
+- sentiment_score (DECIMAL in [-1,1], NULL by default)
 
-matched_keywords (TEXT, NULL by default)
+- matched_keywords (TEXT, NULL by default)
 
-sentiment_confidence (VARCHAR(32), e.g., low|medium|high)
+- sentiment_confidence (VARCHAR(32), e.g., low|medium|high)
 
-confidence_score (DECIMAL(4,3), numeric 0–1)
+- confidence_score (DECIMAL(4,3), numeric 0–1)
 
-labels, price_label_* (VARCHAR)
+- labels, price_label_* (VARCHAR)
 
-Migrations: add_missing_columns.sql both ADD COLUMN IF NOT EXISTS and MODIFY existing columns to NULL DEFAULT NULL. sentiment_confidence is VARCHAR(32).
+- Migrations: add_missing_columns.sql both ADD COLUMN IF NOT EXISTS and MODIFY existing columns to NULL DEFAULT NULL. sentiment_confidence is VARCHAR(32).
 
-
-
-
+---
 
 ## TroubleShooting
 
@@ -386,7 +413,7 @@ where pip
 Ensure Streamlit is using the same interpreter shown above.
 
 
-
+---
 
 ## Data Dictionary (key fields)
 
@@ -401,7 +428,8 @@ Ensure Streamlit is using the same interpreter shown above.
 - matched_keywords — JSON list of matched terms/phrases
 - sentiment_confidence — label: low|medium|high
 - confidence_score — numeric confidence 0–1
-  
+
+---
 
 ## Known Limitations
 

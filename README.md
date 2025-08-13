@@ -202,7 +202,7 @@ python -m streamlit run Dashboard/sentiment_dashboard.py
 *Configuration: Database Credentials (do this first)**
 Don’t use someone else’s password. Every script should read credentials from environment variables so each user supplies their own. Pick one method:
 
-Option A — Set environment variables (recommended)
+Set environment variables (recommended)
 *Windows (PowerShell)*
 ```
 $env:DB_HOST="localhost"
@@ -250,7 +250,7 @@ mysql -u root -p stock_news < add_missing_columns.sql
 Workbench: Open → run (⚡️)
 ```
 
-*Verify*
+- *Verify*
 ```
 USE stock_news;
 SHOW TABLES;
@@ -260,7 +260,7 @@ SELECT COUNT(*) AS rows_in_headlines FROM headlines;
 
 
 3) Environment variables
-Windows
+*Windows*
 ```
 $env:DB_HOST="localhost"
 $env:DB_USER="root"
@@ -268,7 +268,7 @@ $env:DB_PASS="YourPasswordHere"
 $env:DB_NAME="stock_news"
 ```
 
-MacOS
+*MacOS*
 ```
 export DB_HOST="localhost"
 export DB_USER="root"

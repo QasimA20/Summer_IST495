@@ -184,7 +184,7 @@ python -u "Sentiment Scripts\sentiment_score_intro.py"
 # 8) Launch dashboard (after 1–2 trading days of data)
 streamlit run "Dashboard\sentiment_dashboard.py"
 # If streamlit not found: python -m streamlit run "dashboard\sentiment_dashboard.py"
-# If 8501 is busy: streamlit run "Dashboard\sentiment_dashboard.py" --server.port 8502
+# If 8501 is busy: streamlit run "dashboard\sentiment_dashboard.py" --server.port 8502
 ```
 
 *MacOS*
@@ -215,8 +215,8 @@ python "Price Scripts/<your_pct_change_script.py>"
 python "Sentiment Scripts/sentiment_score_intro.py"
 
 # 7) Launch dashboard (after ~1–2 trading days of data)
-python -m streamlit run Dashboard/sentiment_dashboard.py
-# If 8501 is busy: python -m streamlit run Dashboard/sentiment_dashboard.py --server.port 8502
+python -m streamlit run dashboard/sentiment_dashboard.py
+# If 8501 is busy: python -m streamlit run dashboard/sentiment_dashboard.py --server.port 8502
 ```
 
 *Configuration: Database Credentials (do this first)**
@@ -279,25 +279,6 @@ SHOW TABLES;
 DESCRIBE headlines;
 SELECT COUNT(*) AS rows_in_headlines FROM headlines;
 ```
-
-
-3) Environment variables
-   
-*Windows*
-```
-$env:DB_HOST="localhost"
-$env:DB_USER="root"
-$env:DB_PASS="YourPasswordHere"
-$env:DB_NAME="stock_news"
-```
-
-*MacOS*
-```
-export DB_HOST="localhost"
-export DB_USER="root"
-export DB_PASS="YourPasswordHere"
-export DB_NAME="stock_news"
-```
 ---
 
 **CSV Path Note (Finviz)**
@@ -335,16 +316,16 @@ python "Price Scripts/unified_price_scripts.py"
 ```
 
 
-**3) Sentiment Tagging**
+**3) Sentiment Scoring**
 
 - Windows
 ```
-python -u "Sentiment Scripts\sentiment_tagging.py"
+python -u "Sentiment Scripts\sentiment_score_intro.py"
 ```
 
 - MacOS
 ```
-python "Sentiment Scripts/sentiment_tagging.py"
+python "Sentiment Scripts/sentiment_score_intro.py"
 ```
 
 
@@ -367,7 +348,7 @@ python "Percentage Change Scripts\update_price_change_pct_(??).py"
 
 - Windows
 ```
-streamlit run "Dashboard\sentiment_dashboard.py"
+streamlit run "dashboard\sentiment_dashboard.py"
 # If streamlit not found:
 python -m streamlit run "dashboard\sentiment_dashboard.py"
 ```
